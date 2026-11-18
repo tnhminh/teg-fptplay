@@ -12,13 +12,32 @@ TABS = [
     ("khac-biet", "Khác biệt ba phiên bản", "src/khac-biet.html"),
 ]
 
+# Trong iframe srcdoc, link "#c1" được hiểu theo URL trang ngoài, nên bấm vào sẽ
+# tải cả trang ngoài vào trong tab. Chặn lại và tự cuộn tới mục đó.
+ANCHOR_FIX = """<script>
+document.addEventListener('click',e=>{
+  const a=e.target.closest&&e.target.closest('a[href^="#"]');if(!a)return;
+  e.preventDefault();
+  const t=document.getElementById(decodeURIComponent(a.getAttribute('href').slice(1)));
+  if(t)t.scrollIntoView();else scrollTo(0,0);
+});
+</script>
+</body>"""
+
+
+def page(src):
+    text = (ROOT / src).read_text(encoding="utf-8")
+    assert text.count("</body>") == 1, src
+    return html.escape(text.replace("</body>", ANCHOR_FIX), quote=True)
+
+
 buttons = "".join(
     f'<button role="tab" id="t-{k}" data-tab="{k}" aria-controls="p-{k}" aria-selected="false">{label}</button>'
     for k, label, _ in TABS
 )
 frames = "\n".join(
     f'<iframe role="tabpanel" id="p-{k}" data-tab="{k}" aria-labelledby="t-{k}" title="{label}" '
-    f'srcdoc="{html.escape((ROOT / src).read_text(encoding="utf-8"), quote=True)}"></iframe>'
+    f'srcdoc="{page(src)}"></iframe>'
     for k, label, src in TABS
 )
 

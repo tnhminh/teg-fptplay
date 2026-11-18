@@ -985,6 +985,14 @@ const tObs=new IntersectionObserver(es=&gt;es.forEach(e=&gt;{if(e.isIntersecting
 $$(&#x27;.chap&#x27;).forEach(c=&gt;tObs.observe(c));
 })();
 &lt;/script&gt;
+&lt;script&gt;
+document.addEventListener(&#x27;click&#x27;,e=&gt;{
+  const a=e.target.closest&amp;&amp;e.target.closest(&#x27;a[href^=&quot;#&quot;]&#x27;);if(!a)return;
+  e.preventDefault();
+  const t=document.getElementById(decodeURIComponent(a.getAttribute(&#x27;href&#x27;).slice(1)));
+  if(t)t.scrollIntoView();else scrollTo(0,0);
+});
+&lt;/script&gt;
 &lt;/body&gt;
 &lt;/html&gt;
 "></iframe>
@@ -1706,6 +1714,14 @@ const links=$$(&#x27;.nav a&#x27;);
 const no=new IntersectionObserver(es=&gt;es.forEach(e=&gt;{if(e.isIntersecting)links.forEach(a=&gt;a.classList.toggle(&#x27;on&#x27;,a.getAttribute(&#x27;href&#x27;)===&#x27;#&#x27;+e.target.id));}),{rootMargin:&#x27;-35% 0px -60% 0px&#x27;});
 $$(&#x27;.chap&#x27;).forEach(c=&gt;no.observe(c));
 })();
+&lt;/script&gt;
+&lt;script&gt;
+document.addEventListener(&#x27;click&#x27;,e=&gt;{
+  const a=e.target.closest&amp;&amp;e.target.closest(&#x27;a[href^=&quot;#&quot;]&#x27;);if(!a)return;
+  e.preventDefault();
+  const t=document.getElementById(decodeURIComponent(a.getAttribute(&#x27;href&#x27;).slice(1)));
+  if(t)t.scrollIntoView();else scrollTo(0,0);
+});
 &lt;/script&gt;
 &lt;/body&gt;
 &lt;/html&gt;
