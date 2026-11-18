@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FPT Play × Tetrate Enterprise Gateway: đánh giá đầu tư</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F5F6F8; --surface:#FFFFFF; --well:#EEF0F4; --ink:#0F1B2D; --ink2:#47536B; --ink3:#7A859A; --hair:#E2E6ED; --hair2:#D2D8E2;
+  --oss:#0D7A63; --oss-t:#E3F3EE; --com:#2A57C2; --com-t:#E6ECFA; --ent:#E4501B; --ent-t:#FDECE4;
+  --pos:#0D7A63; --neg:#C23A3A; --neg-t:#FBE9E9; --amber:#A8650A; --amber-t:#FBF1DF;
+  --lift:0 1px 2px rgba(15,27,45,.05), 0 14px 36px -18px rgba(15,27,45,.22);
+  --display:"Bricolage Grotesque","Be Vietnam Pro",ui-sans-serif,system-ui,sans-serif;
+  --text:"Be Vietnam Pro",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:light;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 72px)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--text);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:20;background:rgba(245,246,248,.86);backdrop-filter:blur(14px)}
+h1,h2,h3,h4{font-family:var(--display);margin:0;font-weight:700;letter-spacing:-.02em;line-height:1.12}
+p{margin:0}
+button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;padding:0}
+:focus-visible{outline:2.5px solid var(--com);outline-offset:3px;border-radius:6px}
+.shell{max-width:1200px;margin:0 auto;padding:0 28px}
+
+/* top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:19;background:rgba(245,246,248,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--hair)}
+.top .shell{display:flex;align-items:center;justify-content:space-between;height:60px;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:15px;white-space:nowrap}
+.brand svg{flex:0 0 auto}
+.top-meta{font-size:13px;color:var(--ink3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.readbar{position:absolute;left:0;bottom:-1px;height:2px;background:var(--ent);width:0}
+
+/* hero */
+.hero{padding:72px 0 40px}
+.hero-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:56px;align-items:center}
+.hero h1{font-size:clamp(40px,5.6vw,76px);font-weight:800;letter-spacing:-.035em;line-height:1.02}
+.hero h1 .l2{display:block;color:var(--ink3);font-weight:500}
+.hero .lede{margin-top:28px;font-size:19px;line-height:1.6;color:var(--ink2);max-width:46ch}
+.byline{margin-top:28px;padding-top:20px;border-top:1px solid var(--hair2);font-size:14px;color:var(--ink3);max-width:46ch}
+.stage{background:var(--surface);border-radius:24px;box-shadow:var(--lift);padding:22px 22px 18px;position:relative}
+.stage svg{display:block;width:100%;height:auto}
+.seg{position:relative;display:inline-grid;grid-auto-flow:column;grid-auto-columns:1fr;background:var(--well);border-radius:12px;padding:4px;isolation:isolate}
+.seg button{position:relative;z-index:1;padding:8px 14px;font-size:14px;font-weight:600;color:var(--ink2);white-space:nowrap;border-radius:9px;transition:color .3s}
+.seg button[aria-pressed="true"]{color:var(--ink)}
+.seg .ind{position:absolute;z-index:0;top:4px;bottom:4px;border-radius:9px;background:var(--surface);box-shadow:0 1px 2px rgba(15,27,45,.08),0 4px 12px -4px rgba(15,27,45,.18);transition:left .45s cubic-bezier(.3,.9,.2,1),width .45s cubic-bezier(.3,.9,.2,1)}
+.stage-foot{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:14px;border-top:1px solid var(--hair)}
+.lyr{padding:12px 12px 2px 0;font-size:13px;line-height:1.45;color:var(--ink3);transition:color .35s}
+.lyr b{display:flex;align-items:center;gap:7px;font-size:13.5px;color:inherit;margin-bottom:2px}
+.lyr i{width:9px;height:9px;border-radius:50%;border:2px solid currentColor;transition:background .35s}
+.lyr.on{color:var(--ink2)}
+.lyr.on b{color:var(--ink)}
+.lyr.on.k0 i{background:var(--ink);border-color:var(--ink)}
+.lyr.on.k1 i{background:var(--com);border-color:var(--com)}
+.lyr.on.k2 i{background:var(--ent);border-color:var(--ent)}
+.stage-cap{margin-top:14px;font-size:15px;color:var(--ink2);min-height:48px}
+
+/* summary strip */
+.brief{margin:40px 0 0;display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--ink);}
+.brief div{padding:20px 24px 4px 0}
+.brief div+div{padding-left:24px;border-left:1px solid var(--hair2)}
+.brief h3{font-size:22px;font-weight:700}
+.brief p{font-size:15px;color:var(--ink2);margin-top:6px}
+
+/* doc layout */
+.doc{display:grid;grid-template-columns:200px minmax(0,1fr);gap:56px;padding:48px 0 0}
+.toc{position:sticky;top:96px;align-self:start;font-size:14px}
+.toc a{display:grid;grid-template-columns:22px 1fr;gap:6px;padding:7px 0;color:var(--ink3);text-decoration:none;border-left:2px solid transparent;padding-left:12px;margin-left:-14px;transition:color .2s,border-color .2s}
+.toc a span{font-family:var(--display);font-weight:500}
+.toc a:hover{color:var(--ink)}
+.toc a.on{color:var(--ink);border-left-color:var(--ent)}
+.chap{padding:56px 0 72px;border-top:1px solid var(--hair2)}
+.chap-h{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:baseline;margin-bottom:12px}
+.chap-n{font-family:var(--display);font-size:56px;line-height:.9;font-weight:400;color:var(--hair2);letter-spacing:-.04em}
+.chap-h h2{font-size:clamp(28px,3.4vw,42px);font-weight:700;max-width:22ch}
+.chap-lede{color:var(--ink2);font-size:17px;max-width:62ch;margin:0 0 36px}
+.prose{max-width:62ch}
+.fine{font-size:13.5px;color:var(--ink3);line-height:1.55}
+.aside-note{display:flex;gap:12px;font-size:14px;color:var(--ink2);margin-top:20px;max-width:70ch}
+.aside-note::before{content:"";flex:0 0 3px;border-radius:3px;background:var(--hair2)}
+
+/* chapter 1: spectrum */
+.spectrum{position:relative;padding-top:8px}
+.spec-axis{position:relative;height:6px;border-radius:6px;background:linear-gradient(90deg,var(--oss),var(--com) 50%,var(--ent));margin:0 0 30px}
+.spec-ends{display:flex;justify-content:space-between;gap:16px;font-size:13px;color:var(--ink3);margin-bottom:10px}
+.spec-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.spec-col{position:relative;padding-top:4px}
+.spec-col::before{content:"";position:absolute;top:-40px;left:0;width:14px;height:14px;border-radius:50%;background:var(--surface);border:3px solid var(--c);box-shadow:0 0 0 4px var(--paper)}
+.spec-col h3{font-size:24px;color:var(--c)}
+.spec-col .kind{font-size:14px;font-weight:600;margin-top:4px}
+.spec-col ul{list-style:none;padding:0;margin:14px 0 0;display:grid;gap:6px;font-size:15px;color:var(--ink2)}
+.spec-col li{display:flex;gap:10px}
+.spec-col li::before{content:"";flex:0 0 6px;height:6px;border-radius:50%;margin-top:10px;background:var(--c)}
+.spec-col .sells{margin-top:18px;padding-top:12px;border-top:1px solid var(--hair2);font-size:14px;color:var(--ink3)}
+.spec-col .sells b{display:block;color:var(--ink);font-family:var(--display);font-size:17px;font-weight:600}
+.pull{margin-top:44px;font-family:var(--display);font-size:clamp(22px,2.6vw,30px);font-weight:500;line-height:1.3;letter-spacing:-.015em;max-width:34ch}
+
+/* chapter 2: problem explorer */
+.explorer{display:grid;grid-template-columns:260px minmax(0,1fr);gap:0;background:var(--surface);border-radius:24px;box-shadow:var(--lift);overflow:hidden}
+.plist{border-right:1px solid var(--hair);padding:10px;display:flex;flex-direction:column;gap:2px;background:#FAFBFC}
+.ptab{display:grid;grid-template-columns:1fr auto;gap:2px 10px;text-align:left;padding:14px 14px;border-radius:12px;transition:background .2s}
+.ptab .t{font-weight:600;font-size:15px;line-height:1.3}
+.ptab .s{grid-column:1;font-size:12.5px;color:var(--ink3)}
+.ptab .lv{grid-row:1/3;grid-column:2;align-self:center;display:flex;gap:3px}
+.ptab .lv i{width:5px;height:16px;border-radius:2px;background:var(--hair2)}
+.ptab .lv i.f{background:var(--ink)}
+.ptab:hover{background:var(--well)}
+.ptab[aria-selected="true"]{background:var(--surface);box-shadow:0 1px 2px rgba(15,27,45,.06),0 6px 16px -10px rgba(15,27,45,.25)}
+.ptab[aria-selected="true"] .lv i.f{background:var(--ent)}
+.ppanel{padding:36px 40px 40px;min-width:0}
+.ppanel[hidden]{display:none}
+.ppanel h3{font-size:28px;font-weight:700;max-width:24ch}
+.ppanel .intro{margin-top:10px;color:var(--ink2);max-width:62ch}
+.verdict{margin-top:28px;display:flex;align-items:baseline;gap:14px;padding-top:18px;border-top:1px solid var(--hair)}
+.verdict span{font-size:13px;color:var(--ink3)}
+.verdict b{font-family:var(--display);font-size:22px;font-weight:700}
+.verdict em{font-style:normal;font-size:14px;color:var(--ink2)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:10px;background:var(--ink);color:#fff;font-weight:600;font-size:14px;transition:transform .15s,background .2s}
+.btn:active{transform:scale(.98)}
+.btn.sec{background:var(--well);color:var(--ink)}
+.btn svg{flex:0 0 auto}
+
+/* timeline */
+.tlv{margin-top:30px;position:relative}
+.tlv-grid{position:relative;margin-left:150px}
+.tlv-ticks{position:relative;height:22px;font-size:12px;color:var(--ink3)}
+.tlv-ticks span{position:absolute;transform:translateX(-50%);white-space:nowrap}
+.tlv-ticks span::after{content:"";position:absolute;left:50%;top:22px;width:1px;height:104px;background:var(--hair)}
+.tlv-row{display:grid;grid-template-columns:150px 1fr;align-items:center;height:52px;margin-left:-150px}
+.tlv-row b{font-size:14px;font-weight:600;line-height:1.25;padding-right:12px}
+.tlv-row b small{display:block;font-weight:500;color:var(--ink3);font-size:12px}
+.tlv-track{position:relative;height:30px}
+.tlv-bar{position:absolute;top:0;bottom:0;left:0;width:0;border-radius:6px;overflow:hidden;transition:width 1.5s cubic-bezier(.25,.9,.25,1)}
+.tlv-bar.o{background:var(--oss)} .tlv-bar.e{background:var(--ent)}
+.tlv-end{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:12px;font-weight:600;color:#fff;white-space:nowrap;opacity:0;transition:opacity .4s 1.2s}
+.tlv.go .tlv-end{opacity:1}
+.tlv-gain{position:absolute;top:0;bottom:0;background:repeating-linear-gradient(135deg,rgba(255,255,255,.22) 0 6px,transparent 6px 12px);border-left:2px solid #fff;opacity:0;transition:opacity .5s 1.5s;display:flex;align-items:center;padding-left:10px;font-size:12px;font-weight:700;color:#fff;white-space:nowrap}
+.tlv.go .tlv-gain{opacity:1}
+.scrub{position:absolute;top:22px;bottom:0;width:0;pointer-events:none}
+.scrub::before{content:"";position:absolute;top:0;bottom:-10px;left:-1px;width:2px;background:var(--ink)}
+.scrub .knob{position:absolute;bottom:-26px;left:0;transform:translateX(-50%);background:var(--ink);color:#fff;font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px;white-space:nowrap;box-shadow:0 4px 12px -4px rgba(15,27,45,.4)}
+.scrub-input{position:absolute;left:0;right:0;bottom:-34px;height:56px;margin:0;opacity:0;cursor:ew-resize}
+.scrub-input:focus-visible+.scrub .knob{outline:2.5px solid var(--com);outline-offset:2px}
+.tl-read{margin-top:56px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.rd{border-radius:14px;padding:14px 16px;background:var(--well);font-size:14px;color:var(--ink2);transition:background .3s}
+.rd b{display:flex;align-items:center;gap:8px;font-size:15px;color:var(--ink)}
+.rd b i{width:8px;height:8px;border-radius:50%}
+.rd.ok b i{background:var(--pos)} .rd.no{background:var(--neg-t)} .rd.no b i{background:var(--neg)}
+.work{margin-top:30px;display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.work ol{margin:10px 0 0;padding:0;list-style:none;counter-reset:w;display:grid;gap:0}
+.work li{counter-increment:w;display:grid;grid-template-columns:28px 1fr;padding:9px 0;border-bottom:1px solid var(--hair);font-size:15px}
+.work li::before{content:counter(w);font-family:var(--display);color:var(--ink3);font-weight:500}
+
+/* cve */
+.lanes{margin-top:26px;display:grid;gap:26px}
+.lane h4{font-family:var(--text);font-size:14px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.lane h4 i{width:10px;height:10px;border-radius:3px}
+.chain{position:relative;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:10px}
+.chain::before{content:"";position:absolute;left:12px;right:12px;top:12px;height:2px;background:var(--hair)}
+.chain .fill{position:absolute;left:12px;top:12px;height:2px;width:0;background:var(--c);transition:width .6s linear}
+.node{position:relative;padding-top:34px;font-size:13.5px;line-height:1.4;color:var(--ink3);transition:color .3s}
+.node::before{content:"";position:absolute;top:5px;left:5px;width:16px;height:16px;border-radius:50%;background:var(--surface);border:2px solid var(--hair2);transition:background .3s,border-color .3s,transform .3s}
+.node.lit{color:var(--ink)}
+.node.lit::before{background:var(--c);border-color:var(--c);transform:scale(1.1)}
+
+/* incident */
+.console{margin-top:24px;border:1px solid var(--hair);border-radius:18px;overflow:hidden}
+.con-h{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 16px;background:#FAFBFC;border-bottom:1px solid var(--hair);flex-wrap:wrap}
+.livepill{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600}
+.livepill i{width:8px;height:8px;border-radius:50%;background:#E5343F;box-shadow:0 0 0 0 rgba(229,52,63,.5);animation:ring 1.6s infinite}
+@keyframes ring{70%{box-shadow:0 0 0 7px rgba(229,52,63,0)}100%{box-shadow:0 0 0 0 rgba(229,52,63,0)}}
+.con-g{display:grid;grid-template-columns:repeat(4,1fr)}
+.cell{padding:16px;border-right:1px solid var(--hair)}
+.cell:last-child{border-right:0}
+.cell span{font-size:12.5px;color:var(--ink3)}
+.cell b{display:block;font-family:var(--display);font-size:26px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.02em;transition:color .3s}
+.cell svg{display:block;width:100%;height:42px;margin-top:6px}
+.cell.bad b{color:var(--neg)}
+.cell .okc{color:var(--pos)}
+.con-f{padding:12px 16px;border-top:1px solid var(--hair);font-size:14px;color:var(--ink2);background:#FAFBFC}
+.who{margin-top:30px}
+.who-h{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+.who-h h4{font-size:19px}
+.rtab{width:100%;border-collapse:collapse;font-size:14.5px}
+.rtab th,.rtab td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--hair);vertical-align:top}
+.rtab th{font-weight:600;font-size:13px;color:var(--ink3)}
+.rtab td:first-child{color:var(--ink2);width:34%}
+.rtab td.dim{color:var(--ink3);opacity:.55}
+.rtab td.sel{font-weight:600}
+.sla{margin-top:30px}
+.sla-g{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.sla-c{border-radius:16px;padding:18px 20px;background:var(--well)}
+.sla-c.p{background:var(--ent-t)}
+.sla-c span{font-size:13px;color:var(--ink3);font-weight:600}
+.sla-c b{display:block;font-family:var(--display);font-size:36px;font-weight:700;letter-spacing:-.03em;line-height:1.15;margin-top:4px}
+.sla-c.p b{color:var(--ent)}
+.sla-c em{font-style:normal;font-size:13.5px;color:var(--ink2)}
+
+/* waf + phone */
+.waf{margin-top:24px;display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--hair);border-radius:16px;overflow:hidden}
+.waf div{padding:18px;border-right:1px solid var(--hair)}
+.waf div:last-child{border-right:0}
+.waf span{font-size:13px;color:var(--ink3)}
+.waf b{display:block;font-family:var(--display);font-size:24px;margin-top:2px}
+.sw-row{display:flex;gap:14px;align-items:center;margin-top:24px;padding:14px 16px;background:var(--well);border-radius:14px;font-size:15px;font-weight:500}
+.switch{position:relative;flex:0 0 48px;height:28px;border-radius:999px;background:var(--hair2);transition:background .25s}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(15,27,45,.3);transition:transform .3s cubic-bezier(.3,.9,.2,1)}
+.switch[aria-checked="true"]{background:var(--ink)}
+.switch[aria-checked="true"]::after{transform:translateX(20px)}
+.phg{margin-top:18px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.phc{border:1.5px solid var(--hair);border-radius:16px;padding:18px;transition:opacity .4s,border-color .4s,transform .4s;position:relative}
+.phc h4{font-size:18px}
+.phc dl{margin:12px 0 0;display:grid;grid-template-columns:1fr auto;gap:8px 12px;font-size:14px}
+.phc dt{color:var(--ink3)} .phc dd{margin:0;font-weight:600;text-align:right}
+.phc .res{margin-top:14px;padding-top:12px;border-top:1px solid var(--hair);font-size:14px;font-weight:600}
+.phc.out{opacity:.5;border-color:var(--neg);border-style:dashed}
+.phc.out .res{color:var(--neg)}
+.phc.in{border-color:var(--pos)}
+.phc.in .res{color:var(--pos)}
+
+/* chapter 3: dot plot */
+.plot{background:var(--surface);border-radius:24px;box-shadow:var(--lift);padding:28px 32px}
+.plot-h,.plot-r{display:grid;grid-template-columns:minmax(200px,300px) 1fr;gap:24px;align-items:center}
+.plot-h{padding-bottom:10px;border-bottom:1px solid var(--hair)}
+.scale{display:grid;grid-template-columns:repeat(4,1fr);font-size:12.5px;color:var(--ink3);text-align:center}
+.plot-r{padding:13px 0;border-bottom:1px solid var(--hair)}
+.plot-r:last-child{border-bottom:0}
+.plot-r h4{font-family:var(--text);font-size:15px;font-weight:600}
+.plot-r p{font-size:13px;color:var(--ink3)}
+.lane4{position:relative;height:24px}
+.lane4::before{content:"";position:absolute;left:12.5%;right:12.5%;top:50%;height:1px;background:repeating-linear-gradient(90deg,var(--hair2) 0 4px,transparent 4px 8px)}
+.stem{position:absolute;left:12.5%;top:50%;height:3px;margin-top:-1.5px;border-radius:3px;width:0;background:var(--c);transition:width 1s cubic-bezier(.25,.9,.25,1)}
+.pin{position:absolute;top:50%;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;background:var(--c);box-shadow:0 0 0 4px var(--surface);left:12.5%;transition:left 1s cubic-bezier(.25,.9,.25,1)}
+
+/* chapter 4 ledger */
+.ledger-h{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+.count{font-family:var(--display);font-size:15px;color:var(--ink2)}
+.count b{font-size:28px;color:var(--ink)}
+.ledger{columns:2;column-gap:40px}
+.lg{break-inside:avoid;display:flex;justify-content:space-between;gap:16px;align-items:baseline;padding:13px 0;border-bottom:1px solid var(--hair2);transition:opacity .35s}
+.lg span{font-size:15.5px}
+.lg em{font-style:normal;font-size:13px;font-weight:600;white-space:nowrap}
+.lg.no em{color:var(--neg)} .lg.ev em{color:var(--com)} .lg.dep em{color:var(--amber)}
+.lg.dim{opacity:.18}
+.quote-box{margin-top:36px;display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start;padding:24px 28px;background:var(--surface);border-radius:20px;box-shadow:var(--lift)}
+.quote-box p{font-family:var(--display);font-size:22px;font-weight:500;line-height:1.35;letter-spacing:-.01em}
+.quote-box .fine{font-family:var(--text);font-size:14px;margin-top:10px;font-weight:400}
+
+/* chapter 5 tco */
+.tco{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:0;background:var(--surface);border-radius:24px;box-shadow:var(--lift);overflow:hidden}
+.tco-in{padding:28px;border-right:1px solid var(--hair);background:#FAFBFC}
+.sl{padding:12px 0;border-bottom:1px solid var(--hair)}
+.sl:last-of-type{border-bottom:0}
+.sl label{display:flex;justify-content:space-between;gap:12px;font-size:14px;color:var(--ink2);margin-bottom:6px}
+.sl output{font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap}
+.sl.cost output{color:var(--ent)}
+input[type=range].r{-webkit-appearance:none;appearance:none;width:100%;height:22px;background:transparent}
+input[type=range].r::-webkit-slider-runnable-track{height:4px;border-radius:4px;background:linear-gradient(var(--ink),var(--ink)) 0/var(--p,50%) 100% no-repeat,var(--hair2)}
+input[type=range].r::-moz-range-track{height:4px;border-radius:4px;background:var(--hair2)}
+input[type=range].r::-moz-range-progress{height:4px;border-radius:4px;background:var(--ink)}
+input[type=range].r::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:#fff;border:2px solid var(--ink);margin-top:-7px;box-shadow:0 2px 6px rgba(15,27,45,.2)}
+input[type=range].r::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:#fff;border:2px solid var(--ink)}
+.sl.cost input[type=range].r::-webkit-slider-runnable-track{background:linear-gradient(var(--ent),var(--ent)) 0/var(--p,50%) 100% no-repeat,var(--hair2)}
+.sl.cost input[type=range].r::-webkit-slider-thumb{border-color:var(--ent)}
+.tco-out{padding:28px 32px}
+.tco-kpi{display:grid;grid-template-columns:auto auto 1fr;gap:32px;align-items:end}
+.tco-kpi span{font-size:13px;color:var(--ink3);display:block}
+.tco-kpi b{font-family:var(--display);font-size:46px;font-weight:700;letter-spacing:-.035em;line-height:1;font-variant-numeric:tabular-nums}
+.tco-kpi .sm b{font-size:28px}
+.tco-kpi button{justify-self:end}
+.pos{color:var(--pos)} .neg{color:var(--neg)}
+#wf{display:block;width:100%;height:auto;margin-top:22px}
+
+/* chapter 6 matrix */
+.mx-wrap{overflow-x:auto;background:var(--surface);border-radius:24px;box-shadow:var(--lift)}
+.mx{width:100%;min-width:660px;border-collapse:separate;border-spacing:0;font-size:15px}
+.mx th,.mx td{padding:15px 20px;text-align:left;border-bottom:1px solid var(--hair);transition:background .25s,opacity .25s}
+.mx thead th{padding-top:22px;vertical-align:bottom}
+.mx thead button{font-family:var(--display);font-size:20px;font-weight:700;color:var(--c);text-align:left;padding:4px 0;border-bottom:2px solid transparent}
+.mx thead button[aria-pressed="true"]{border-bottom-color:var(--c)}
+.mx tbody tr:last-child td{border-bottom:0}
+.mx td:first-child{color:var(--ink2);font-weight:500}
+.mx .g{color:var(--pos);font-weight:600}.mx .b{color:var(--neg);font-weight:600}.mx .m{color:var(--amber);font-weight:600}
+.mx.focus td.off,.mx.focus th.off{opacity:.35}
+.mx td.on{background:#FAFBFC}
+
+/* chapter 7 positioning */
+.pos-wrap{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:32px;align-items:start}
+.quad{position:relative;aspect-ratio:1.25/1;background:var(--surface);border-radius:24px;box-shadow:var(--lift);overflow:hidden}
+.quad .gridl{position:absolute;inset:44px 28px 52px 56px;border-left:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink)}
+.quad .gridl::before{content:"";position:absolute;left:50%;top:0;bottom:0;border-left:1px dashed var(--hair2)}
+.quad .gridl::after{content:"";position:absolute;top:50%;left:0;right:0;border-top:1px dashed var(--hair2)}
+.ax-x{position:absolute;bottom:18px;right:28px;font-size:13px;color:var(--ink2);font-weight:600}
+.ax-y{position:absolute;top:16px;left:56px;font-size:13px;color:var(--ink2);font-weight:600}
+.zone{position:absolute;border-radius:24px;background:var(--ent-t);border:1.5px dashed var(--ent);opacity:.9}
+.zone span{position:absolute;top:8px;left:12px;font-size:12px;font-weight:700;color:var(--ent)}
+.pt{position:absolute;transform:translate(-20px,-50%);display:flex;align-items:center;gap:8px;white-space:nowrap}
+.pt.lf{flex-direction:row-reverse;transform:translate(calc(-100% + 20px),-50%)}
+.pt .b{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:15px;background:var(--surface);border:2px solid var(--ink);transition:transform .3s cubic-bezier(.3,.9,.2,1),background .25s,color .25s;box-shadow:0 4px 12px -4px rgba(15,27,45,.25)}
+.pt .l{font-size:13px;font-weight:600;background:rgba(255,255,255,.9);padding:2px 6px;border-radius:6px}
+.pt[aria-pressed="true"] .b{background:var(--ink);color:#fff;transform:scale(1.15)}
+.pt.rec .b{border-color:var(--ent)}
+.pt.rec[aria-pressed="true"] .b{background:var(--ent)}
+.pdet h3{font-size:26px}
+.pdet .tagl{font-size:14px;color:var(--ink3);margin-top:4px}
+.pdet p.body{margin-top:14px;color:var(--ink2)}
+.pdet dl{margin:18px 0 0;display:grid;grid-template-columns:auto 1fr;gap:8px 16px;font-size:14px}
+.pdet dt{color:var(--ink3)} .pdet dd{margin:0;font-weight:600}
+.asks{margin-top:56px;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:40px;align-items:start}
+.asks h3{font-size:26px;max-width:18ch}
+.asks .sub{margin-top:10px;color:var(--ink2);font-size:15px}
+.meter{margin-top:22px;display:flex;align-items:center;gap:12px;font-size:14px;color:var(--ink2)}
+.meter .tr{flex:1;height:6px;border-radius:6px;background:var(--well);overflow:hidden}
+.meter .tr i{display:block;height:100%;width:0;background:var(--pos);transition:width .45s cubic-bezier(.3,.9,.2,1)}
+.ask{list-style:none;margin:0;padding:0;background:var(--surface);border-radius:20px;box-shadow:var(--lift);overflow:hidden}
+.ask li+li{border-top:1px solid var(--hair)}
+.ask button{width:100%;display:grid;grid-template-columns:26px 1fr;gap:14px;align-items:start;text-align:left;padding:16px 20px;transition:background .2s}
+.ask button:hover{background:#FAFBFC}
+.ask .bx{width:22px;height:22px;border-radius:7px;border:2px solid var(--hair2);display:grid;place-items:center;transition:background .2s,border-color .2s;margin-top:1px}
+.ask .bx svg{opacity:0;transform:scale(.6);transition:opacity .2s,transform .25s cubic-bezier(.3,1.4,.4,1)}
+.ask button[aria-pressed="true"] .bx{background:var(--pos);border-color:var(--pos)}
+.ask button[aria-pressed="true"] .bx svg{opacity:1;transform:scale(1)}
+.ask b{display:block;font-weight:600;font-size:15px}
+.ask small{font-size:13.5px;color:var(--ink3)}
+.caveat{margin-top:20px;padding:18px 20px;border-radius:16px;background:var(--amber-t);color:#5E3B06;font-size:15px}
+
+/* closing */
+.closing{padding:120px 0 120px;background:var(--surface);border-top:1px solid var(--hair2);margin-top:40px}
+.closing p.a{font-family:var(--display);font-size:clamp(26px,3.4vw,40px);color:var(--ink3);font-weight:500;letter-spacing:-.025em;line-height:1.2;max-width:28ch}
+.closing p.b{font-family:var(--display);font-size:clamp(34px,4.8vw,62px);font-weight:800;letter-spacing:-.035em;line-height:1.05;max-width:22ch;margin-top:18px}
+.closing .fine{margin-top:40px;max-width:70ch}
+
+@media (max-width:1080px){
+  .doc{grid-template-columns:minmax(0,1fr)}
+  .toc{display:none}
+}
+@media (max-width:900px){
+  .hero-grid,.pos-wrap,.asks,.tco{grid-template-columns:minmax(0,1fr)}
+  .tco-in{border-right:0;border-bottom:1px solid var(--hair)}
+  .explorer{grid-template-columns:1fr}
+  .plist{flex-direction:row;overflow-x:auto;border-right:0;border-bottom:1px solid var(--hair)}
+  .ptab{flex:0 0 200px}
+  .ppanel{padding:26px 22px 30px}
+  .spec-cols{grid-template-columns:1fr;gap:36px}
+  .spec-col::before{display:none}
+  .con-g{grid-template-columns:1fr 1fr}
+  .cell:nth-child(2){border-right:0}
+  .cell:nth-child(-n+2){border-bottom:1px solid var(--hair)}
+  .work,.phg,.brief{grid-template-columns:1fr}
+  .brief div+div{padding-left:0;border-left:0;border-top:1px solid var(--hair2)}
+  .ledger{columns:1}
+  .plot{padding:20px}
+  .plot-h,.plot-r{grid-template-columns:1fr;gap:6px}
+  .plot-h>div:first-child{display:none}
+  .tco-kpi{grid-template-columns:1fr 1fr}
+  .tco-kpi button{grid-column:1/-1;justify-self:start}
+}
+@media (max-width:560px){
+  .shell{padding:0 18px}
+  .tlv-grid{margin-left:0}
+  .tlv-row{grid-template-columns:1fr;height:auto;margin:0 0 6px;gap:4px}
+  .tlv-ticks span:nth-child(even){display:none}
+  .tlv-ticks span::after{display:none}
+  .tl-read,.sla-g,.waf{grid-template-columns:1fr}
+  .waf div{border-right:0;border-bottom:1px solid var(--hair)}
+  .chain{grid-auto-flow:row}
+  .chain::before,.chain .fill{display:none}
+  .seg button{padding:8px 10px;font-size:13px}
+  .stage-foot{grid-template-columns:1fr}
+  .chap-n{font-size:40px}
+  .top-meta{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="shell">
+    <div class="brand">
+      <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="4" fill="#0F1B2D"/><circle cx="11" cy="11" r="7" fill="none" stroke="#2A57C2" stroke-width="1.6"/><circle cx="11" cy="11" r="10" fill="none" stroke="#E4501B" stroke-width="1.6"/></svg>
+      FPT Play API Gateway
+    </div>
+
+  </div>
+  <div class="readbar" id="readbar"></div>
+</header>
+
+<div class="shell">
+  <section class="hero">
+    <div class="hero-grid">
+      <div>
+        <h1>Enterprise không làm Gateway mạnh hơn.<span class="l2">Nó làm Gateway ít rủi ro hơn.</span></h1>
+        <p class="lede">Với FPT Play, TEG Enterprise không tạo bước nhảy về tính năng so với OSS hay Community. Thứ được mua thêm là năng lực bảo trì, bảo mật và hỗ trợ vận hành Production từ nhà cung cấp.</p>
+        <p class="byline">Đối chiếu từ tài liệu Tetrate v1.10.0 (phát hành 10/11/2026), bổ sung những khác biệt chưa được nêu trong email của Huabing.</p>
+      </div>
+      <div class="stage">
+        <div class="seg" id="seg" role="group" aria-label="Chọn phiên bản">
+          <span class="ind" aria-hidden="true"></span>
+          <button data-v="0" aria-pressed="false">OSS</button>
+          <button data-v="1" aria-pressed="false">Community</button>
+          <button data-v="2" aria-pressed="true">Enterprise</button>
+        </div>
+        <svg id="scene" viewBox="0 0 640 380" role="img" aria-label="Sơ đồ: lưu lượng khán giả đi qua Envoy Gateway tới các dịch vụ backend, với các lớp bảo vệ tùy phiên bản">
+          <defs>
+            <radialGradient id="glow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#E4501B" stop-opacity=".16"/><stop offset="1" stop-color="#E4501B" stop-opacity="0"/></radialGradient>
+          </defs>
+          <g id="paths" fill="none" stroke="#E2E6ED" stroke-width="1.2"></g>
+          <g id="viewers"></g>
+          <g id="services"></g>
+          <circle id="rGlow" cx="300" cy="190" r="128" fill="url(#glow)" style="transition:opacity .6s"/>
+          <circle id="r2" cx="300" cy="190" r="98" fill="none" stroke="#E4501B" stroke-width="2.5" style="transition:opacity .5s, r .6s" />
+          <circle id="r2b" cx="300" cy="190" r="104" fill="none" stroke="#E4501B" stroke-width="1" stroke-dasharray="2 5" style="transition:opacity .5s"/>
+          <circle id="r1" cx="300" cy="190" r="74" fill="#fff" stroke="#2A57C2" stroke-width="2.5" style="transition:opacity .5s"/>
+          <circle cx="300" cy="190" r="50" fill="#0F1B2D"/>
+          <text x="300" y="186" text-anchor="middle" fill="#fff" font-family="Be Vietnam Pro, sans-serif" font-size="12.5" font-weight="600">Envoy</text>
+          <text x="300" y="202" text-anchor="middle" fill="#fff" font-family="Be Vietnam Pro, sans-serif" font-size="12.5" font-weight="600">Gateway</text>
+          <g id="dots"></g>
+          <text x="22" y="24" fill="#7A859A" font-family="Be Vietnam Pro, sans-serif" font-size="12">Khán giả xem trực tiếp</text>
+          <text x="618" y="24" text-anchor="end" fill="#7A859A" font-family="Be Vietnam Pro, sans-serif" font-size="12">Backend API</text>
+        </svg>
+        <div class="stage-foot">
+          <div class="lyr k0 on"><b><i></i>Lõi Gateway</b>Routing, policy, rate limit</div>
+          <div class="lyr k1"><b><i></i>WAF tích hợp</b>Tetrate đóng gói sẵn</div>
+          <div class="lyr k2"><b><i></i>Hardened và SLA</b>Vòng đời dài, hỗ trợ sự cố</div>
+        </div>
+        <p class="stage-cap" id="cap" aria-live="polite"></p>
+      </div>
+    </div>
+
+    <div class="brief">
+      <div><h3>Gấp đôi vòng đời</h3><p>Mỗi minor version được vá khoảng 12 tháng thay vì 6, nên ít lần phải nâng cấp Production hơn.</p></div>
+      <div><h3>Bản build bảo mật riêng</h3><p>Từ v1.10.0, Enterprise chạy Hardened Envoy. Community vẫn dùng bản build upstream.</p></div>
+      <div><h3>Hỗ trợ chỉ mạnh khi mua đúng gói</h3><p>Phản hồi 1 giờ và 24/7 cho Sev 1 thuộc Premium, không phải Standard.</p></div>
+    </div>
+  </section>
+</div>
+
+<div class="shell">
+<div class="doc">
+  <nav class="toc" aria-label="Mục lục">
+    <a href="#c1"><span>1</span>Ba phiên bản</a>
+    <a href="#c2"><span>2</span>Năm bài toán</a>
+    <a href="#c3"><span>3</span>Giá trị đầu tư</a>
+    <a href="#c4"><span>4</span>Không tự giải quyết</a>
+    <a href="#c5"><span>5</span>Chi phí và TCO</a>
+    <a href="#c6"><span>6</span>So sánh tiêu chí</a>
+    <a href="#c7"><span>7</span>Đề xuất</a>
+  </nav>
+
+  <main>
+  <!-- 1 -->
+  <section class="chap" id="c1">
+    <div class="chap-h"><span class="chap-n">1</span><h2>Cùng một lõi, khác nhau ở thứ bao quanh</h2></div>
+    <p class="chap-lede">Ba phiên bản trải trên một trục: từ tự chủ hoàn toàn đến chuyển bớt rủi ro vận hành sang nhà cung cấp.</p>
+    <div class="spectrum">
+      <div class="spec-ends"><span>Tự chủ, tự chịu rủi ro</span><span>Chia sẻ rủi ro với nhà cung cấp</span></div>
+      <div class="spec-axis"></div>
+      <div class="spec-cols">
+        <div class="spec-col" style="--c:var(--oss)">
+          <h3>Envoy Gateway OSS</h3><p class="kind">Open source</p>
+          <ul><li>Tự triển khai</li><li>Tự vận hành</li><li>Tự xử lý rủi ro</li></ul>
+          <p class="sells">Thứ nhận được<b>Technical Independence</b></p>
+        </div>
+        <div class="spec-col" style="--c:var(--com)">
+          <h3>TEG Community</h3><p class="kind">Bản phân phối miễn phí</p>
+          <ul><li>Tính năng như OSS</li><li>WAF tích hợp sẵn</li><li>Tetrate đóng gói</li></ul>
+          <p class="sells">Thứ nhận được<b>Deployment Convenience</b></p>
+        </div>
+        <div class="spec-col" style="--c:var(--ent)">
+          <h3>TEG Enterprise</h3><p class="kind">Thuê bao thương mại</p>
+          <ul><li>Hardened images</li><li>Hỗ trợ dài hạn</li><li>Hỗ trợ sự cố theo SLA</li></ul>
+          <p class="sells">Thứ nhận được<b>Operational Risk Reduction</b></p>
+        </div>
+      </div>
+    </div>
+    <p class="pull">Enterprise không bán cho FPT Play một API Gateway khác. Nó bán năng lực bảo trì, bảo mật và hỗ trợ vận hành.</p>
+  </section>
+
+  <!-- 2 -->
+  <section class="chap" id="c2">
+    <div class="chap-h"><span class="chap-n">2</span><h2>Enterprise giải quyết được những bài toán nào</h2></div>
+    <p class="chap-lede">Mỗi bài toán có mô phỏng riêng. Cột vạch bên phải mỗi mục là mức giá trị đối với FPT Play.</p>
+
+    <div class="explorer">
+      <div class="plist" role="tablist" aria-label="Bài toán" aria-orientation="vertical">
+        <button class="ptab" role="tab" id="pt0" aria-controls="pp0" aria-selected="true"><span class="t">Vòng đời phiên bản</span><span class="s">Rất cao</span><span class="lv"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i></span></button>
+        <button class="ptab" role="tab" id="pt1" aria-controls="pp1" aria-selected="false" tabindex="-1"><span class="t">Lỗ hổng bảo mật</span><span class="s">Rất cao, có điều kiện</span><span class="lv"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i></span></button>
+        <button class="ptab" role="tab" id="pt2" aria-controls="pp2" aria-selected="false" tabindex="-1"><span class="t">Sự cố Production</span><span class="s">Rất cao, nếu đúng gói</span><span class="lv"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i></span></button>
+        <button class="ptab" role="tab" id="pt3" aria-controls="pp3" aria-selected="false" tabindex="-1"><span class="t">Kiểm soát Phone Home</span><span class="s">Cao, nếu CSOC yêu cầu</span><span class="lv"><i class="f"></i><i class="f"></i><i class="f"></i><i></i></span></button>
+        <button class="ptab" role="tab" id="pt4" aria-controls="pp4" aria-selected="false" tabindex="-1"><span class="t">WAF tích hợp</span><span class="s">Thấp</span><span class="lv"><i class="f"></i><i></i><i></i><i></i></span></button>
+      </div>
+
+      <div class="ppanel" role="tabpanel" id="pp0" aria-labelledby="pt0">
+        <h3>Giảm áp lực nâng cấp hệ thống liên tục</h3>
+        <p class="intro">Envoy Gateway OSS hỗ trợ mỗi minor version 6 tháng; TEG Enterprise khoảng 12 tháng theo subscription. Kéo vạch thời gian để xem nhánh 1.10.x còn được vá đến khi nào.</p>
+        <div class="tlv" id="tlv">
+          <div class="tlv-grid" id="tlvGrid">
+            <div class="tlv-ticks" id="ticks"></div>
+            <div class="tlv-row"><b>OSS 1.10.x<small>EOL 05/05/2027</small></b><div class="tlv-track"><div class="tlv-bar o" data-end="2027-05-05"></div></div></div>
+            <div class="tlv-row"><b>TEG 1.10.x<small>EOS 01/11/2027</small></b><div class="tlv-track"><div class="tlv-bar e" data-end="2027-11-01"><span class="tlv-gain" id="gain">+~6 tháng</span></div></div></div>
+            <input type="range" class="scrub-input" id="scrubIn" min="0" max="1000" value="0" aria-label="Chọn ngày trên dòng thời gian">
+            <div class="scrub" id="scrub"><span class="knob" id="knob">17/11/2026</span></div>
+          </div>
+        </div>
+        <div class="tl-read" aria-live="polite"><div class="rd" id="rdO"></div><div class="rd" id="rdE"></div></div>
+        <div class="work">
+          <div>
+            <h4 style="font-family:var(--text);font-size:15px;font-weight:600">Mỗi lần nâng cấp Gateway trên Production kéo theo</h4>
+            <ol>
+              <li>Regression testing</li><li>Performance benchmark</li><li>Kiểm tra tương thích Kubernetes</li>
+              <li>Kiểm tra tương thích API routing và security policy</li><li>Lập kế hoạch rollout và rollback</li><li>Né lịch các sự kiện Live quan trọng</li>
+            </ol>
+          </div>
+          <div>
+            <p style="color:var(--ink2)">Vòng đời dài hơn nghĩa là có thể giữ một nhánh phiên bản lâu hơn mà vẫn nhận bản vá, từ đó giảm số lần phải chạy cả quy trình bên cạnh mỗi năm.</p>
+            <p class="aside-note">Khác biệt đã được xác minh từ chính sách hỗ trợ của Envoy Gateway và Tetrate. Email của Huabing chưa đề cập điểm này.</p>
+          </div>
+        </div>
+        <div class="verdict"><span>Giá trị</span><b>Rất cao</b></div>
+      </div>
+
+      <div class="ppanel" role="tabpanel" id="pp1" aria-labelledby="pt1" hidden>
+        <h3>Thu hẹp khoảng thời gian phơi nhiễm CVE</h3>
+        <p class="intro">Giả sử Envoy Proxy có lỗ hổng nghiêm trọng khiến Gateway crash chỉ bằng một HTTP request. Khi toàn bộ Backend API của FPT Play đứng sau Gateway, một lỗi ở đây ảnh hưởng nhiều dịch vụ cùng lúc.</p>
+        <div style="margin-top:22px"><button class="btn" id="cveBtn"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 1l9 5-9 5z" fill="currentColor"/></svg><span>Chạy mô phỏng</span></button></div>
+        <div class="lanes">
+          <div class="lane" style="--c:var(--com)"><h4><i style="background:var(--com)"></i>OSS / Community, bản build upstream</h4>
+            <div class="chain"><span class="fill"></span>
+              <div class="node">CVE được công bố</div><div class="node">Chờ upstream phát hành bản vá</div><div class="node">Tự đánh giá, tự backport nếu ở nhánh cũ</div><div class="node">Tự đóng gói và kiểm thử</div><div class="node">Triển khai Production</div>
+            </div>
+          </div>
+          <div class="lane" style="--c:var(--ent)"><h4><i style="background:var(--ent)"></i>TEG Enterprise, Hardened Envoy</h4>
+            <div class="chain"><span class="fill"></span>
+              <div class="node">CVE được công bố</div><div class="node">Tetrate đánh giá và vá trên Hardened Envoy</div><div class="node">Nhận hardened image đã đóng gói</div><div class="node">Kiểm thử và triển khai Production</div>
+            </div>
+          </div>
+        </div>
+        <p class="aside-note">Luồng minh họa. Enterprise có khả năng cung cấp bản vá riêng, nhưng không mặc định bảo đảm luôn nhanh hơn upstream. Giá trị nằm ở việc bớt công tự nghiên cứu, tự backport và tự đóng gói bản vá.</p>
+        <div class="verdict"><span>Giá trị</span><b>Rất cao</b><em>nếu có cam kết thời gian cung cấp bản vá phù hợp</em></div>
+      </div>
+
+      <div class="ppanel" role="tabpanel" id="pp2" aria-labelledby="pt2" hidden>
+        <h3>Rút ngắn thời gian xử lý sự cố (MTTR)</h3>
+        <p class="intro">Giữa một trận bóng đá trực tiếp, Gateway gặp sự cố kiểu “mọi thứ trông vẫn ổn”. Bấm để kích hoạt.</p>
+        <div class="console">
+          <div class="con-h"><span class="livepill"><i></i>Trực tiếp, phút <span id="min">67</span>′</span><button class="btn" id="incBtn">Kích hoạt sự cố</button></div>
+          <div class="con-g">
+            <div class="cell"><span>Gateway Pod</span><b class="okc">Running</b></div>
+            <div class="cell"><span>CPU / RAM</span><b id="vCpu">41%</b><svg id="spC" viewBox="0 0 200 42" preserveAspectRatio="none"><polyline fill="none" stroke="#0D7A63" stroke-width="1.8"/></svg></div>
+            <div class="cell" id="c503"><span>Tỷ lệ HTTP 503</span><b id="v503">0,1%</b><svg id="spE" viewBox="0 0 200 42" preserveAspectRatio="none"><polyline fill="none" stroke="#C23A3A" stroke-width="1.8"/></svg></div>
+            <div class="cell" id="cP99"><span>P99 latency</span><b id="vP99">120 ms</b><svg id="spP" viewBox="0 0 200 42" preserveAspectRatio="none"><polyline fill="none" stroke="#C23A3A" stroke-width="1.8"/></svg></div>
+          </div>
+          <p class="con-f" id="conF">Backend service vẫn hoạt động bình thường.</p>
+        </div>
+
+        <div class="who">
+          <div class="who-h"><h4>Ai cùng xử lý?</h4>
+            <div class="seg" id="segWho" role="group" aria-label="Mô hình vận hành"><span class="ind" aria-hidden="true"></span><button data-w="1" aria-pressed="true">OSS tự vận hành</button><button data-w="2" aria-pressed="false">Enterprise</button></div>
+          </div>
+          <div style="overflow-x:auto"><table class="rtab" id="rtab">
+            <thead><tr><th>Công việc</th><th>OSS tự vận hành</th><th>Enterprise</th></tr></thead>
+            <tbody>
+              <tr><td>Điều tra nguyên nhân</td><td>Team nội bộ</td><td>Nội bộ + Tetrate</td></tr>
+              <tr><td>Phân tích Envoy internals</td><td>Team nội bộ</td><td>Có chuyên gia sản phẩm hỗ trợ</td></tr>
+              <tr><td>Xác định lỗi upstream</td><td>Tự nghiên cứu</td><td>Có kênh hỗ trợ thương mại</td></tr>
+              <tr><td>Tìm workaround</td><td>Nội bộ chịu trách nhiệm</td><td>Phối hợp với Tetrate</td></tr>
+              <tr><td>Yêu cầu bug fix</td><td>Qua cộng đồng</td><td>Có quy trình escalation</td></tr>
+              <tr><td>Thời gian phản hồi</td><td>Không cam kết từ cộng đồng</td><td>Theo SLA hợp đồng</td></tr>
+            </tbody></table></div>
+        </div>
+
+        <div class="sla">
+          <div class="who-h"><h4>Enterprise khác Premium Support</h4>
+            <div class="seg" id="segSev" role="group" aria-label="Mức độ sự cố"><span class="ind" aria-hidden="true"></span><button data-s="0" aria-pressed="true">Sev 1</button><button data-s="1" aria-pressed="false">Sev 2</button><button data-s="2" aria-pressed="false">Sev 3</button><button data-s="3" aria-pressed="false">Sev 4</button></div>
+          </div>
+          <p class="fine" id="sevName">Sev 1: sự cố nghiêm trọng</p>
+          <div class="sla-g" aria-live="polite">
+            <div class="sla-c"><span>Standard</span><b id="sStd">1 ngày làm việc</b><em id="sStdN">Không hỗ trợ 24/7</em></div>
+            <div class="sla-c p"><span>Premium</span><b id="sPre">1 giờ</b><em id="sPreN">Hỗ trợ 24/7</em></div>
+          </div>
+          <p class="aside-note">Đây là thời gian phản hồi ban đầu theo điều khoản công khai của Tetrate, không phải cam kết thời gian khắc phục. Cần xác nhận điều khoản có áp dụng cho gói Tetrate đề xuất cho FPT Play hay không.</p>
+        </div>
+        <div class="verdict"><span>Giá trị</span><b>Rất cao</b><em>nếu mua đúng gói hỗ trợ</em></div>
+      </div>
+
+      <div class="ppanel" role="tabpanel" id="pp3" aria-labelledby="pt3" hidden>
+        <h3>Kiểm soát dữ liệu gửi ra ngoài</h3>
+        <p class="intro">TEG Community định kỳ gửi trạng thái instance về Tetrate. Theo tài liệu hãng, cơ chế này không thu thập traffic, cấu hình Gateway hay danh tính client. Với hạ tầng Private Cloud, đây vẫn là điểm cần quan tâm.</p>
+        <div class="sw-row"><button class="switch" role="switch" aria-checked="false" id="csoc" aria-labelledby="csocL"></button><span id="csocL">CSOC yêu cầu không gửi telemetry về nhà cung cấp</span></div>
+        <div class="phg">
+          <div class="phc" data-k="o"><h4 style="color:var(--oss)">OSS</h4><dl><dt>Phone Home</dt><dd>Không có</dd><dt>Mặc định</dt><dd>—</dd><dt>Tắt được</dt><dd>—</dd></dl><p class="res">Phù hợp</p></div>
+          <div class="phc" data-k="c"><h4 style="color:var(--com)">TEG Community</h4><dl><dt>Phone Home</dt><dd>Có</dd><dt>Mặc định</dt><dd>Bật</dd><dt>Tắt được</dt><dd style="color:var(--neg)">Không</dd></dl><p class="res" id="resC">Cần đánh giá</p></div>
+          <div class="phc" data-k="e"><h4 style="color:var(--ent)">TEG Enterprise</h4><dl><dt>Phone Home</dt><dd>Có</dd><dt>Mặc định</dt><dd>Tắt</dd><dt>Tắt được</dt><dd style="color:var(--pos)">Có</dd></dl><p class="res">Phù hợp</p></div>
+        </div>
+        <p class="aside-note" id="phN">Bật yêu cầu của CSOC để xem phương án nào bị loại.</p>
+        <div class="verdict"><span>Giá trị</span><b>Cao</b><em>nếu có yêu cầu bắt buộc về bảo mật dữ liệu</em></div>
+      </div>
+
+      <div class="ppanel" role="tabpanel" id="pp4" aria-labelledby="pt4" hidden>
+        <h3>Giảm công sức tự tích hợp WAF</h3>
+        <p class="intro">WAF tích hợp sẵn thêm một lớp bảo vệ ngay tại Gateway. Nhưng theo tài liệu chính thức của Tetrate, TEG Community cũng đã có WAF, dùng cùng cơ chế ExtendedSecurityPolicy.</p>
+        <div class="waf">
+          <div><span>OSS</span><b style="color:var(--neg)">Không có</b></div>
+          <div><span>TEG Community</span><b style="color:var(--pos)">Có sẵn</b></div>
+          <div><span>TEG Enterprise</span><b style="color:var(--pos)">Có sẵn</b></div>
+        </div>
+        <p class="aside-note">Nếu FPT Play đã có hệ thống WAF do CSOC quản lý, đây không phải lý do đủ lớn để mua Enterprise.</p>
+        <div class="verdict"><span>Giá trị riêng của Enterprise</span><b style="color:var(--neg)">Thấp</b></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="chap" id="c3">
+    <div class="chap-h"><span class="chap-n">3</span><h2>Giá trị nằm ở hỗ trợ, không nằm ở tính năng</h2></div>
+    <p class="chap-lede">Đánh giá định tính theo nhu cầu hiện tại của dự án API Gateway, không phải benchmark sản phẩm.</p>
+    <div class="plot" id="plot">
+      <div class="plot-h"><div></div><div class="scale"><span>Rất thấp</span><span>Thấp</span><span>Cao</span><span>Rất cao</span></div></div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="chap" id="c4">
+    <div class="chap-h"><span class="chap-n">4</span><h2>Những gì Enterprise không tự động giải quyết</h2></div>
+    <p class="chap-lede">Mười hai bài toán vẫn thuộc về kiến trúc và vận hành của đội ngũ FPT Play, dù mua gói nào.</p>
+    <div class="ledger-h">
+      <p class="count"><b id="cnt">12</b> bài toán</p>
+      <div class="seg" id="segF" role="group" aria-label="Lọc theo câu trả lời"><span class="ind" aria-hidden="true"></span><button data-f="all" aria-pressed="true">Tất cả</button><button data-f="no" aria-pressed="false">Không</button><button data-f="ev" aria-pressed="false">Chưa có bằng chứng</button><button data-f="dep" aria-pressed="false">Còn tùy</button></div>
+    </div>
+    <div class="ledger" id="ledger"></div>
+    <div class="quote-box">
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="2" width="24" height="24" rx="7" fill="#FDECE4"/><path d="M14 8v8M14 19.5v.5" stroke="#E4501B" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <div><p>Mua Enterprise không thay thế được năng lực xây dựng kiến trúc và vận hành của đội ngũ nội bộ.</p>
+      <p class="fine">Tài liệu hỗ trợ của Tetrate nêu rõ không cung cấp Production Support cho Redis và khuyến nghị khách hàng tự triển khai Redis phù hợp môi trường Production.</p></div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="chap" id="c5">
+    <div class="chap-h"><span class="chap-n">5</span><h2>Đánh giá bằng TCO, không chỉ bằng phí license</h2></div>
+    <p class="chap-lede">Điều chỉnh giả định để xem giá trị ròng thay đổi thế nào. Đơn vị triệu VNĐ mỗi năm, trừ số giờ.</p>
+    <div class="tco">
+      <div class="tco-in" id="sliders"></div>
+      <div class="tco-out" aria-live="polite">
+        <div class="tco-kpi">
+          <div><span>Giá trị ròng kỳ vọng</span><b id="kNet">200 tr</b></div>
+          <div class="sm"><span>ROI ước tính</span><b id="kRoi">20,0%</b></div>
+          <button class="btn sec" id="reset">Về giả định gốc</button>
+        </div>
+        <svg id="wf" viewBox="0 0 600 300" role="img" aria-label="Biểu đồ thác nước: các khoản tiết kiệm cộng lại thành giá trị kỳ vọng, so với chi phí subscription"></svg>
+        <p class="fine" style="margin-top:12px">Giả định minh họa, không phải báo giá Tetrate hay số liệu thực tế của FPT Play. Chỉ nên tính lợi ích quy trực tiếp cho Enterprise và tránh tính trùng chi phí tiết kiệm.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section class="chap" id="c6">
+    <div class="chap-h"><span class="chap-n">6</span><h2>OSS, Community hay Enterprise</h2></div>
+    <p class="chap-lede">Chọn tên một phiên bản để làm nổi bật cột đó.</p>
+    <div class="mx-wrap">
+      <table class="mx" id="mx">
+        <thead><tr><th style="width:30%"></th>
+          <th><button style="--c:var(--oss)" data-c="1" aria-pressed="false">OSS</button></th>
+          <th><button style="--c:var(--com)" data-c="2" aria-pressed="false">TEG Community</button></th>
+          <th><button style="--c:var(--ent)" data-c="3" aria-pressed="false">TEG Enterprise</button></th></tr></thead>
+        <tbody>
+          <tr><td>Tối ưu chi phí</td><td class="g">Rất tốt</td><td class="g">Rất tốt</td><td class="m">Có phí</td></tr>
+          <tr><td>Tự chủ công nghệ</td><td class="g">Rất cao</td><td>Cao</td><td>Cao</td></tr>
+          <tr><td>Tính năng Gateway cốt lõi</td><td>Đầy đủ</td><td>Đầy đủ</td><td>Đầy đủ</td></tr>
+          <tr><td>WAF tích hợp sẵn</td><td class="b">Không</td><td class="g">Có</td><td class="g">Có</td></tr>
+          <tr><td>Bản build bảo mật riêng</td><td class="b">Không</td><td class="b">Không</td><td class="g">Có</td></tr>
+          <tr><td>Hỗ trợ dài hạn từ hãng</td><td class="m">Theo thỏa thuận</td><td class="b">Không</td><td class="g">Có</td></tr>
+          <tr><td>Hỗ trợ sự cố theo SLA</td><td class="m">Có thể mua</td><td class="b">Không</td><td class="m">Theo gói</td></tr>
+          <tr><td>Mức phụ thuộc nhà cung cấp</td><td class="g">Thấp</td><td>Trung bình</td><td class="m">Cao hơn</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section class="chap" id="c7">
+    <div class="chap-h"><span class="chap-n">7</span><h2>Bốn phương án, tập trung so sánh hai</h2></div>
+    <p class="chap-lede">Phương án thứ ba chính là hướng Huabing đã đề cập. Chọn từng điểm trên biểu đồ để xem chi tiết.</p>
+    <div class="pos-wrap">
+      <div class="quad" id="quad">
+        <span class="ax-y">Hỗ trợ từ hãng</span>
+        <div class="gridl"></div>
+        <span class="ax-x">Tự chủ công nghệ</span>
+        <div class="zone" style="left:44%;top:9%;width:52%;height:46%"><span>Vùng cần so sánh</span></div>
+        <button class="pt lf" data-o="0" style="left:84%;top:78%" aria-pressed="false"><span class="b">01</span><span class="l">OSS self-managed</span></button>
+        <button class="pt" data-o="1" style="left:38%;top:72%" aria-pressed="false"><span class="b">02</span><span class="l">TEG Community</span></button>
+        <button class="pt rec lf" data-o="2" style="left:84%;top:36%" aria-pressed="true"><span class="b">03</span><span class="l">OSS + Support</span></button>
+        <button class="pt rec" data-o="3" style="left:56%;top:20%" aria-pressed="false"><span class="b">04</span><span class="l">Enterprise + Premium</span></button>
+      </div>
+      <div class="pdet" id="pdet" aria-live="polite"></div>
+    </div>
+    <p class="fine" style="margin-top:12px">Vị trí trên biểu đồ là định tính, suy ra từ bảng so sánh ở chương 6.</p>
+
+    <div class="asks">
+      <div>
+        <h3>Yêu cầu Tetrate chứng minh phần chênh lệch giữa 03 và 04</h3>
+        <p class="sub">Đánh dấu từng mục khi đã có câu trả lời rõ ràng.</p>
+        <div class="meter"><span id="askN">0/5</span><span class="tr"><i id="askBar"></i></span></div>
+        <p class="caveat" id="askMsg">Hiện chưa đủ dữ liệu về báo giá và phạm vi hỗ trợ để kết luận hiệu quả đầu tư thực tế.</p>
+      </div>
+      <ul class="ask" id="ask">
+        <li><button aria-pressed="false"><span class="bx"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5L10 3.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><b>Thời gian cung cấp CVE hotfix</b><small>Có cam kết cụ thể, hay chỉ “best effort”?</small></span></button></li>
+        <li><button aria-pressed="false"><span class="bx"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5L10 3.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><b>Vòng đời hỗ trợ phiên bản</b><small>Phương án 03 có kéo dài vòng đời như 04 không?</small></span></button></li>
+        <li><button aria-pressed="false"><span class="bx"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5L10 3.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><b>SLA áp dụng</b><small>Standard hay Premium, có 24/7 cho Sev 1–2 không?</small></span></button></li>
+        <li><button aria-pressed="false"><span class="bx"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5L10 3.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><b>Hỗ trợ kỹ thuật chuyên sâu</b><small>Tư vấn kiến trúc và hiệu năng có trong phạm vi hợp đồng?</small></span></button></li>
+        <li><button aria-pressed="false"><span class="bx"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5L10 3.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><b>Chi phí subscription</b><small>Chênh lệch giá giữa hai phương án là bao nhiêu?</small></span></button></li>
+      </ul>
+    </div>
+  </section>
+  </main>
+</div>
+</div>
+
+<section class="closing">
+  <div class="shell">
+    <p class="a">Không nên mua Enterprise vì cần một API Gateway mạnh hơn.</p>
+    <p class="b">Nên mua Enterprise nếu cần một Gateway có rủi ro vận hành thấp hơn, và Tetrate chứng minh được giá trị đó.</p>
+    <p class="fine">Nếu hai phương án có năng lực hỗ trợ tương đương, chênh lệch giá lớn nhưng chỉ khác nhau ở hardened images và WAF, cần cân nhắc kỹ trước khi mua Enterprise. Nguồn tham chiếu: tài liệu Envoy Gateway, tài liệu Tetrate Enterprise Gateway v1.10.0 và điều khoản hỗ trợ công khai của Tetrate. Số liệu TCO là giả định minh họa.</p>
+  </div>
+</section>
+
+<script>
+(function(){
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const NS='http://www.w3.org/2000/svg';
+const el=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;};
+const vn=(n,d=1)=>n.toLocaleString('vi-VN',{maximumFractionDigits:d});
+
+/* segmented controls */
+function seg(root,onPick){
+  const btns=$$('button',root), ind=$('.ind',root);
+  const place=()=>{const b=btns.find(x=>x.getAttribute('aria-pressed')==='true')||btns[0];ind.style.left=b.offsetLeft+'px';ind.style.width=b.offsetWidth+'px';};
+  btns.forEach(b=>b.addEventListener('click',()=>{btns.forEach(x=>x.setAttribute('aria-pressed',x===b));place();onPick(b);}));
+  addEventListener('resize',place); requestAnimationFrame(place); document.fonts&&document.fonts.ready.then(place);
+  return place;
+}
+
+/* reading progress */
+addEventListener('scroll',()=>{const h=document.documentElement;$('#readbar').style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';},{passive:true});
+
+/* hero scene */
+const VY=[70,120,170,220,270,320], SY=[60,112,164,216,268,320];
+const SN=['Xác thực','Phát video','Lịch phát sóng','Thanh toán','Gợi ý nội dung','Người dùng'];
+const gP=$('#paths'), gV=$('#viewers'), gS=$('#services'), gD=$('#dots');
+const inP=[], outP=[];
+VY.forEach(y=>{
+  for(let i=0;i<3;i++) gV.appendChild(el('rect',{x:22+i*16,y:y-6,width:11,height:12,rx:3,fill:'#EEF0F4',stroke:'#D2D8E2'}));
+  const p=el('path',{d:`M72,${y} C170,${y} 190,190 252,190`}); gP.appendChild(p); inP.push(p);
+});
+SY.forEach((y,i)=>{
+  gS.appendChild(el('rect',{x:500,y:y-12,width:24,height:24,rx:6,fill:'#fff',stroke:'#D2D8E2'}));
+  gS.appendChild(el('circle',{cx:512,cy:y,r:3.5,fill:'#0D7A63'}));
+  const t=el('text',{x:532,y:y+4,fill:'#47536B','font-size':13.5,'font-family':'Be Vietnam Pro, sans-serif'}); t.textContent=SN[i]; gS.appendChild(t);
+  const p=el('path',{d:`M348,190 C410,190 420,${y} 498,${y}`}); gP.appendChild(p); outP.push(p);
+});
+const parts=[];
+for(let i=0;i<26;i++){const c=el('circle',{r:2.6,fill:'#0F1B2D',opacity:0});gD.appendChild(c);parts.push({c,a:inP[i%6],b:outP[(i*5)%6],t:Math.random()*2,s:.0035+Math.random()*.003});}
+let level=2;
+function frame(){
+  parts.forEach(p=>{
+    p.t+=p.s; if(p.t>2){p.t=0;p.a=inP[Math.random()*6|0];p.b=outP[Math.random()*6|0];}
+    const onA=p.t<1, path=onA?p.a:p.b, f=onA?p.t:p.t-1, L=path.getTotalLength(), pt=path.getPointAtLength(f*L);
+    p.c.setAttribute('cx',pt.x);p.c.setAttribute('cy',pt.y);
+    p.c.setAttribute('opacity',Math.min(1,f*6,(1-f)*6)*.85);
+    p.c.setAttribute('fill',onA?'#0F1B2D':(level===2?'#E4501B':level===1?'#2A57C2':'#0D7A63'));
+  });
+  requestAnimationFrame(frame);
+}
+if(!reduce) requestAnimationFrame(frame);
+const CAP=['Chỉ có lõi. FPT Play tự triển khai, tự vận hành và tự chịu toàn bộ rủi ro, đổi lại là sự tự chủ hoàn toàn.',
+ 'Lõi cộng bản đóng gói có WAF của Tetrate. Miễn phí và tiện triển khai, nhưng không có vòng đời dài hay SLA.',
+ 'Cùng lõi, cùng WAF, thêm lớp ngoài cùng: Hardened Envoy, vòng đời ~12 tháng và hỗ trợ sự cố. Đó là toàn bộ phần mua thêm.'];
+function setLevel(v){
+  level=v;
+  $('#r1').style.opacity=v>=1?1:.0; $('#r2').style.opacity=v>=2?1:0; $('#r2b').style.opacity=v>=2?1:0; $('#rGlow').style.opacity=v>=2?1:0;
+  $$('.lyr').forEach((l,i)=>l.classList.toggle('on',i<=v));
+  $('#cap').textContent=CAP[v];
+  $$('#seg button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.v===v)); if(typeof heroPlace==='function')heroPlace();
+}
+const heroPlace=seg($('#seg'),b=>setLevel(+b.dataset.v));
+if(reduce){setLevel(2);} else {setLevel(0);setTimeout(()=>{setLevel(1);},700);setTimeout(()=>setLevel(2),1400);}
+
+/* problem tabs */
+const tabs=$$('.ptab');
+function selTab(i,focus){
+  tabs.forEach((t,j)=>{t.setAttribute('aria-selected',i===j);t.tabIndex=i===j?0:-1;$('#'+t.getAttribute('aria-controls')).hidden=i!==j;});
+  if(focus)tabs[i].focus();
+  if(i===0)requestAnimationFrame(layoutTL);
+  if(i===2)$$('.seg',$('#pp2')).forEach(s=>s._place&&s._place());
+}
+tabs.forEach((t,i)=>{t.addEventListener('click',()=>selTab(i));t.addEventListener('keydown',e=>{
+  const k=e.key; if(['ArrowDown','ArrowRight'].includes(k)){e.preventDefault();selTab((i+1)%tabs.length,1);} if(['ArrowUp','ArrowLeft'].includes(k)){e.preventDefault();selTab((i-1+tabs.length)%tabs.length,1);}
+});});
+
+/* timeline */
+const T0=new Date('2026-11-01'),T1=new Date('2027-12-31'),SPAN=T1-T0,today=new Date('2026-11-17');
+const pc=d=>(d-T0)/SPAN*100;
+const TK=[['2026-11-10','10/11/26'],['2027-01-01','T1/27'],['2027-03-01','T3/27'],['2027-05-01','T5/27'],['2027-07-01','T7/27'],['2027-09-01','T9/27'],['2027-11-01','T11/27']];
+$('#ticks').innerHTML=TK.map(t=>`<span style="left:${pc(new Date(t[0]))}%">${t[1]}</span>`).join('');
+const sIn=$('#scrubIn'); sIn.value=pc(today)*10;
+function tlGo(){ $$('.tlv-bar').forEach(b=>b.style.width=pc(new Date(b.dataset.end))+'%'); const g=$('#gain'), E=pc(new Date('2027-11-01'))-pc(T0), O=pc(new Date('2027-05-05'))-pc(T0); g.style.left=(O/E*100)+'%'; g.style.right='0'; $('#tlv').classList.add('go'); }
+function layoutTL(){
+  const track=$('.tlv-track'), grid=$('#tlvGrid');
+  const off=track.getBoundingClientRect().left-grid.getBoundingClientRect().left, w=track.offsetWidth;
+  sIn.style.left=off+'px'; sIn.style.right='auto'; sIn.style.width=w+'px';
+  const p=sIn.value/1000, d=new Date(T0.getTime()+p*SPAN);
+  $('#scrub').style.left=(off+p*w)+'px';
+  $('#knob').style.transform=`translateX(${-Math.min(90,Math.max(10,p*100))}%)`;
+  $('#knob').textContent=d.toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit',year:'numeric'});
+  const rd=(id,name,end,lbl)=>{const ok=d<=end, days=Math.ceil((end-d)/864e5), r=$(id);
+    r.className='rd '+(ok?'ok':'no');
+    r.innerHTML=`<b><i></i>${name}: ${ok?'còn được vá':'đã hết hỗ trợ'}</b>${ok?`Còn ${days} ngày trước ${lbl}`:(name.startsWith('OSS')?'Phải nâng cấp minor version để tiếp tục nhận bản vá':'Đã qua End of Support')}`;};
+  rd('#rdO','OSS 1.10.x',new Date('2027-05-05'),'EOL'); rd('#rdE','TEG Enterprise 1.10.x',new Date('2027-11-01'),'End of Support');
+}
+sIn.addEventListener('input',layoutTL); addEventListener('resize',layoutTL);
+const tlObs=new IntersectionObserver(es=>{if(es[0].isIntersecting){setTimeout(tlGo,reduce?0:200);tlObs.disconnect();}},{threshold:.3});
+tlObs.observe($('#tlv')); requestAnimationFrame(layoutTL); document.fonts&&document.fonts.ready.then(layoutTL);
+
+/* cve */
+let busy=false;
+$('#cveBtn').addEventListener('click',()=>{
+  if(busy)return;busy=true;
+  const lanes=$$('.lane'), gap=reduce?0:700;
+  lanes.forEach(l=>{$$('.node',l).forEach(n=>n.classList.remove('lit'));const f=$('.fill',l);f.style.transition='none';f.style.width='0';f.offsetWidth;f.style.transition='';});
+  let max=0;
+  lanes.forEach(l=>{const ns=$$('.node',l), f=$('.fill',l), chain=$('.chain',l); max=Math.max(max,ns.length);
+    ns.forEach((n,i)=>setTimeout(()=>{n.classList.add('lit'); const x=n.offsetLeft+13-12; f.style.width=Math.max(0,x)+'px';},i*gap));});
+  setTimeout(()=>{busy=false;$('#cveBtn span').textContent='Chạy lại';},max*gap);
+});
+
+/* incident console */
+const N=50, ser={c:[],e:[],p:[]}; let inc=false, tick=0;
+for(let i=0;i<N;i++){ser.c.push(40+Math.random()*4);ser.e.push(.1+Math.random()*.1);ser.p.push(115+Math.random()*15);}
+function draw(id,arr,max){$('#'+id+' polyline').setAttribute('points',arr.map((v,i)=>`${i/(N-1)*200},${40-Math.min(v/max,1)*36}`).join(' '));}
+function step(){
+  tick++;
+  const tgt=inc?{c:56,e:23,p:4800}:{c:41,e:.15,p:120};
+  const last=k=>ser[k][ser[k].length-1];
+  const nx=(k,j)=>{const v=last(k)+(tgt[k]-last(k))*.18+(Math.random()-.5)*j;return Math.max(0,v);};
+  ser.c.push(nx('c',2));ser.e.push(nx('e',inc?2:.05));ser.p.push(nx('p',inc?300:8));
+  ['c','e','p'].forEach(k=>ser[k].shift());
+  draw('spC',ser.c,100);draw('spE',ser.e,30);draw('spP',ser.p,6000);
+  $('#vCpu').textContent=Math.round(last('c'))+'%';
+  $('#v503').textContent=vn(last('e'))+'%';
+  $('#vP99').textContent=vn(Math.round(last('p')),0)+' ms';
+  $('#c503').classList.toggle('bad',last('e')>2);$('#cP99').classList.toggle('bad',last('p')>600);
+  if(tick%25===0)$('#min').textContent=Math.min(90,+$('#min').textContent+1);
+}
+['c','e','p'].forEach(()=>{});draw('spC',ser.c,100);draw('spE',ser.e,30);draw('spP',ser.p,6000);
+setInterval(()=>{if(!$('#pp2').hidden&&!reduce)step();},140);
+$('#incBtn').addEventListener('click',()=>{
+  inc=!inc; $('#incBtn').textContent=inc?'Khôi phục bình thường':'Kích hoạt sự cố';
+  if(reduce)for(let i=0;i<40;i++)step();
+  $('#conF').textContent=inc?'Pod vẫn Running, CPU/RAM chưa chạm ngưỡng, backend vẫn bình thường, nhưng 503 và P99 tăng vọt. Loại sự cố này đòi hỏi hiểu sâu Envoy internals.':'Backend service vẫn hoạt động bình thường.';
+});
+const whoPlace=seg($('#segWho'),b=>who(+b.dataset.w)); $('#segWho')._place=whoPlace;
+function who(c){$$('#rtab tbody tr').forEach(tr=>{tr.children[1].className=c===1?'sel':'dim';tr.children[2].className=c===2?'sel':'dim';});}
+who(1);
+const SLA=[['Sev 1: sự cố nghiêm trọng','1 ngày làm việc','1 giờ',1],['Sev 2: suy giảm dịch vụ','1 ngày làm việc','2 giờ',1],['Sev 3: vấn đề vận hành','1 ngày làm việc','1 ngày làm việc',0],['Sev 4: tư vấn thông thường','2 ngày làm việc','2 ngày làm việc',0]];
+const sevPlace=seg($('#segSev'),b=>{const s=SLA[+b.dataset.s];$('#sevName').textContent=s[0];$('#sStd').textContent=s[1];$('#sPre').textContent=s[2];$('#sStdN').textContent=s[3]?'Không hỗ trợ 24/7':'Trong giờ làm việc';$('#sPreN').textContent=s[3]?'Hỗ trợ 24/7':'Như Standard ở mức này';});
+$('#segSev')._place=sevPlace;
+
+/* phone home */
+$('#csoc').addEventListener('click',e=>{
+  const on=e.currentTarget.getAttribute('aria-checked')!=='true'; e.currentTarget.setAttribute('aria-checked',on);
+  $$('.phc').forEach(c=>{c.classList.toggle('out',on&&c.dataset.k==='c');c.classList.toggle('in',on&&c.dataset.k!=='c');});
+  $('#resC').textContent=on?'Bị loại':'Cần đánh giá';
+  $('#phN').textContent=on?'TEG Community bị loại vì Phone Home bật mặc định và không tắt được. OSS vẫn là lựa chọn thay thế, còn Enterprise cho phép tắt bằng cấu hình.':'Bật yêu cầu của CSOC để xem phương án nào bị loại.';
+});
+
+/* dot plot */
+const R=[['Long-term Version Support','Kéo dài vòng đời hỗ trợ phiên bản',4],['CVE Hotfix & Hardened Images','Giảm rủi ro lỗ hổng bảo mật',4],['Premium Production Support','Hỗ trợ xử lý sự cố Production',4],['Architecture & Performance Consulting','Nếu nằm trong phạm vi hợp đồng',4],['Data Privacy / Phone Home','Kiểm soát telemetry ra bên ngoài',3],['Built-in WAF','Community đã có',2],['AI Gateway','Chưa phải nhu cầu cốt lõi, còn roadmap',2],['FIPS Compliance','Chưa xác định nhu cầu bắt buộc',1]];
+const CL={4:'var(--ent)',3:'var(--com)',2:'var(--ink3)',1:'var(--hair2)'};
+$('#plot').insertAdjacentHTML('beforeend',R.map(r=>`<div class="plot-r"><div><h4>${r[0]}</h4><p>${r[1]}</p></div><div class="lane4" style="--c:${CL[r[2]]}" data-v="${r[2]}"><span class="stem"></span><span class="pin"></span></div></div>`).join(''));
+const pObs=new IntersectionObserver(es=>{if(es[0].isIntersecting){$$('.lane4').forEach((l,i)=>setTimeout(()=>{const x=12.5+(+l.dataset.v-1)*25;$('.pin',l).style.left=x+'%';$('.stem',l).style.width=(x-12.5)+'%';},reduce?0:i*80));pObs.disconnect();}},{threshold:.25});
+pObs.observe($('#plot'));
+
+/* ledger */
+const LG=[['Đáp ứng 200.000–500.000 RPS','Không','no'],['Giảm CPU, RAM so với OSS','Chưa có bằng chứng','ev'],['Giảm P99 latency','Chưa có bằng chứng','ev'],['High Availability','Không','no'],['Multi-cluster failover','Không','no'],['Kubernetes cluster failure','Không','no'],['Disaster Recovery','Không','no'],['Zero-downtime deployment','Phụ thuộc thiết kế','dep'],['Quản lý tập trung multi-cluster','Chưa có cơ sở xác nhận','dep'],['Giám sát toàn bộ hạ tầng','Không','no'],['Redis High Availability','Không','no'],['Tự động xử lý mọi sự cố','Không','no']];
+$('#ledger').innerHTML=LG.map(l=>`<div class="lg ${l[2]}" data-k="${l[2]}"><span>${l[0]}</span><em>${l[1]}</em></div>`).join('');
+seg($('#segF'),b=>{const f=b.dataset.f;let n=0;$$('.lg').forEach(x=>{const show=f==='all'||x.dataset.k===f;x.classList.toggle('dim',!show);n+=show;});$('#cnt').textContent=n;});
+
+/* TCO */
+const S=[{k:'cost',l:'Chi phí Enterprise subscription',v:1000,min:200,max:3000,st:50,u:' tr',cls:'cost'},{k:'staff',l:'Chi phí nhân sự kỹ thuật tiết kiệm',v:350,min:0,max:1500,st:10,u:' tr'},{k:'upg',l:'Chi phí nâng cấp tiết kiệm',v:150,min:0,max:800,st:10,u:' tr'},{k:'hrs',l:'Giờ downtime tránh được mỗi năm',v:4,min:0,max:24,st:.5,u:' giờ'},{k:'loss',l:'Thiệt hại mỗi giờ downtime',v:150,min:0,max:1000,st:10,u:' tr'},{k:'sec',l:'Chi phí xử lý bảo mật tiết kiệm',v:100,min:0,max:800,st:10,u:' tr'}];
+$('#sliders').innerHTML=S.map(s=>`<div class="sl ${s.cls||''}"><label for="s_${s.k}"><span>${s.l}</span><output id="o_${s.k}"></output></label><input class="r" type="range" id="s_${s.k}" min="${s.min}" max="${s.max}" step="${s.st}" value="${s.v}"></div>`).join('');
+const wf=$('#wf');
+function calc(){
+  const g=k=>+$('#s_'+k).value;
+  S.forEach(s=>{const i=$('#s_'+s.k);i.style.setProperty('--p',((i.value-s.min)/(s.max-s.min)*100)+'%');$('#o_'+s.k).textContent=vn(g(s.k))+s.u;});
+  const dt=g('hrs')*g('loss'), items=[['Nhân sự',g('staff')],['Nâng cấp',g('upg')],['Downtime',dt],['Bảo mật',g('sec')]];
+  const val=items.reduce((a,b)=>a+b[1],0), cost=g('cost'), net=val-cost, roi=cost?net/cost*100:0;
+  $('#kNet').textContent=(net>0?'+':'')+vn(net,0)+' tr'; $('#kNet').className=net>=0?'pos':'neg';
+  $('#kRoi').textContent=roi.toLocaleString('vi-VN',{minimumFractionDigits:1,maximumFractionDigits:1})+'%'; $('#kRoi').className=roi>=0?'pos':'neg';
+  const W=600,H=300,top=30,base=244,mx=Math.max(val,cost,1)*1.08, y=v=>base-(v/mx)*(base-top);
+  const cols=[...items.map(i=>({n:i[0],a:0,b:i[1],c:'#0F1B2D'})),{n:'Giá trị',a:0,b:val,c:'#0D7A63',tot:1},{n:'Chi phí',a:0,b:cost,c:'#E4501B',tot:1},{n:'Ròng',a:Math.min(val,cost),b:Math.max(val,cost),c:net>=0?'#0D7A63':'#C23A3A',net:1}];
+  let acc=0; cols.slice(0,4).forEach(c=>{c.a=acc;acc+=c.b;c.b=acc;});
+  const cw=W/cols.length, bw=cw*.56;
+  let s=`<line x1="0" x2="${W}" y1="${base}" y2="${base}" stroke="#D2D8E2"/>`;
+  cols.forEach((c,i)=>{
+    const x=i*cw+(cw-bw)/2, y1=y(c.b), y0=y(c.a), h=Math.max(1,y0-y1);
+    const amt=c.tot||c.net?(c.net?net:c.b):c.b-c.a;
+    if(i<3)s+=`<line x1="${x+bw}" x2="${x+cw}" y1="${y1}" y2="${y1}" stroke="#D2D8E2" stroke-dasharray="3 3"/>`;
+    if(i===3)s+=`<line x1="${x+bw}" x2="${x+cw}" y1="${y1}" y2="${y1}" stroke="#D2D8E2" stroke-dasharray="3 3"/>`;
+    s+=`<rect x="${x}" y="${y1}" width="${bw}" height="${h}" rx="5" fill="${c.c}" ${c.net?'fill-opacity=".14" stroke="'+c.c+'" stroke-width="1.5" stroke-dasharray="4 3"':(c.tot?'':'fill-opacity="'+(.35+i*.15)+'"')} style="transition:all .35s"/>`;
+    s+=`<text x="${x+bw/2}" y="${y1-8}" text-anchor="middle" font-size="15" font-weight="700" fill="${c.tot||c.net?c.c:'#0F1B2D'}" font-family="Be Vietnam Pro, sans-serif">${c.net&&net>0?'+':''}${vn(amt,0)}</text>`;
+    s+=`<text x="${x+bw/2}" y="${base+20}" text-anchor="middle" font-size="14" fill="#47536B" font-family="Be Vietnam Pro, sans-serif">${c.n}</text>`;
+  });
+  s+=`<text x="${W/2}" y="${H-6}" text-anchor="middle" font-size="12.5" fill="#7A859A" font-family="Be Vietnam Pro, sans-serif">Bốn khoản tiết kiệm cộng dồn thành giá trị kỳ vọng, rồi so với chi phí subscription</text>`;
+  wf.innerHTML=s;
+}
+S.forEach(s=>$('#s_'+s.k).addEventListener('input',calc));
+$('#reset').addEventListener('click',()=>{S.forEach(s=>$('#s_'+s.k).value=s.v);calc();});
+calc();
+
+/* matrix */
+const mxB=$$('#mx thead button');
+mxB.forEach(b=>b.addEventListener('click',()=>{
+  const on=b.getAttribute('aria-pressed')!=='true', c=+b.dataset.c;
+  mxB.forEach(x=>x.setAttribute('aria-pressed',on&&x===b));
+  $('#mx').classList.toggle('focus',on);
+  $$('#mx tr').forEach(tr=>[...tr.children].forEach((td,i)=>{td.classList.toggle('off',on&&i>0&&i!==c);td.classList.toggle('on',on&&i===c&&tr.parentNode.tagName==='TBODY');}));
+}));
+
+/* positioning */
+const OD=[
+ ['OSS self-managed','Tự chủ hoàn toàn, tiết kiệm chi phí','Phù hợp khi đội ngũ đủ năng lực vận hành Envoy ở quy mô Production. FPT Play tự nâng cấp mỗi 6 tháng, tự backport bản vá bảo mật và tự xử lý sự cố mà không có SLA.',[['Chi phí','Không phí license'],['Phụ thuộc hãng','Thấp'],['Rủi ro vận hành','Do nội bộ chịu toàn bộ']]],
+ ['TEG Community','Bản đóng gói có WAF của Tetrate','Miễn phí, có WAF tích hợp, tiện triển khai. Không có hỗ trợ dài hạn hay SLA, và Phone Home bật mặc định, không tắt được, có thể bị loại nếu CSOC cấm telemetry.',[['Chi phí','Miễn phí'],['Phụ thuộc hãng','Trung bình'],['Rủi ro vận hành','Do nội bộ chịu']]],
+ ['OSS + Tetrate Commercial Support','Giữ nền tảng OSS, mua năng lực chuyên gia','Hướng Huabing đã đề cập. Giữ độ tự chủ của OSS nhưng có chuyên gia Tetrate hỗ trợ khi gặp sự cố. Một trong hai phương án nên đặt lên bàn cân.',[['Chi phí','Phí hỗ trợ'],['Phụ thuộc hãng','Thấp đến trung bình'],['Cần làm rõ','Vòng đời, CVE hotfix, SLA']]],
+ ['TEG Enterprise + Premium Support','Hardened images, vòng đời dài, xử lý rủi ro','Hardened Envoy, vòng đời ~12 tháng mỗi phiên bản, phản hồi 1 giờ và 24/7 cho Sev 1. Đổi lại là chi phí cao hơn và phụ thuộc nhà cung cấp nhiều hơn.',[['Chi phí','Subscription + Premium'],['Phụ thuộc hãng','Cao hơn'],['Cần làm rõ','Chênh lệch giá so với 03']]]
+];
+const pts=$$('.pt');
+function opt(i){pts.forEach((p,j)=>p.setAttribute('aria-pressed',i===j));const o=OD[i];
+  $('#pdet').innerHTML=`<h3>${o[0]}</h3><p class="tagl">${o[1]}</p><p class="body">${o[2]}</p><dl>${o[3].map(r=>`<dt>${r[0]}</dt><dd>${r[1]}</dd>`).join('')}</dl>`;}
+pts.forEach((p,i)=>p.addEventListener('click',()=>opt(i))); opt(2);
+
+/* asks */
+const ab=$$('#ask button');
+ab.forEach(b=>b.addEventListener('click',()=>{
+  b.setAttribute('aria-pressed',b.getAttribute('aria-pressed')!=='true');
+  const n=ab.filter(x=>x.getAttribute('aria-pressed')==='true').length;
+  $('#askN').textContent=n+'/5'; $('#askBar').style.width=n*20+'%';
+  const m=$('#askMsg');
+  if(n===5){m.textContent='Đã đủ dữ liệu để so sánh hiệu quả đầu tư thực tế giữa phương án 03 và 04.';m.style.background='var(--oss-t)';m.style.color='#0A4D3F';}
+  else{m.textContent=n?`Còn ${5-n} mục chưa có câu trả lời. Chưa đủ dữ liệu để kết luận hiệu quả đầu tư.`:'Hiện chưa đủ dữ liệu về báo giá và phạm vi hỗ trợ để kết luận hiệu quả đầu tư thực tế.';m.style.background='';m.style.color='';}
+}));
+
+/* toc */
+const links=$$('.toc a');
+const tObs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)links.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id));}),{rootMargin:'-35% 0px -60% 0px'});
+$$('.chap').forEach(c=>tObs.observe(c));
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OSS, Community, Enterprise: khác biệt thật nằm ở đâu?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F5F6F8; --surface:#FFFFFF; --soft:#FAFBFC; --well:#EEF0F4; --ink:#0F1B2D; --ink2:#47536B; --ink3:#7A859A; --hair:#E2E6ED; --hair2:#D2D8E2;
+  --oss:#0D7A63; --oss-t:#E3F3EE; --com:#2A57C2; --com-t:#E6ECFA; --ent:#E4501B; --ent-t:#FDECE4;
+  --pos:#0D7A63; --neg:#C23A3A; --neg-t:#FBE9E9; --amber:#A8650A; --amber-t:#FBF1DF;
+  --lift:0 1px 2px rgba(15,27,45,.05), 0 14px 36px -18px rgba(15,27,45,.22);
+  --display:"Bricolage Grotesque","Be Vietnam Pro",ui-sans-serif,system-ui,sans-serif;
+  --text:"Be Vietnam Pro",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:light; box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 72px)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--text);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:20;background:rgba(245,246,248,.9);backdrop-filter:blur(14px)}
+h1,h2,h3,h4{font-family:var(--display);margin:0;font-weight:700;letter-spacing:-.02em;line-height:1.12}
+p{margin:0}
+button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;padding:0;text-align:inherit}
+:focus-visible{outline:2.5px solid var(--com);outline-offset:3px;border-radius:6px}
+.shell{max-width:1160px;margin:0 auto;padding:0 28px}
+
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:19;background:rgba(245,246,248,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--hair)}
+.top .shell{display:flex;align-items:center;justify-content:space-between;height:60px;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:15px;white-space:nowrap}
+.nav{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nav a{font-size:13.5px;color:var(--ink3);text-decoration:none;padding:6px 10px;border-radius:8px;white-space:nowrap;transition:color .2s,background .2s}
+.nav a:hover{color:var(--ink)}
+.nav a.on{color:var(--ink);background:var(--well)}
+.readbar{position:absolute;left:0;bottom:-1px;height:2px;background:var(--ent);width:0}
+
+/* hero */
+.hero{padding:76px 0 64px}
+.hero-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:56px;align-items:center}
+.hero h1{font-size:clamp(38px,5.2vw,70px);font-weight:800;letter-spacing:-.035em;line-height:1.03}
+.hero h1 span{display:block;color:var(--ink3);font-weight:500}
+.lede{margin-top:26px;font-size:19px;color:var(--ink2);max-width:46ch}
+.split{margin-top:30px;display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--ink)}
+.split div{padding:16px 18px 0 0}
+.split div+div{padding-left:18px;border-left:1px solid var(--hair2)}
+.split b{display:block;font-family:var(--display);font-size:18px;font-weight:700;line-height:1.25}
+.split p{font-size:14px;color:var(--ink2);margin-top:6px}
+.tree{background:var(--surface);border-radius:24px;box-shadow:var(--lift);padding:22px}
+.tree svg{display:block;width:100%;height:auto}
+.tree .tcap{font-size:13px;color:var(--ink3);margin-top:10px}
+.draw{stroke-dasharray:var(--len);stroke-dashoffset:var(--len);transition:stroke-dashoffset 1.1s cubic-bezier(.4,.1,.2,1)}
+.go .draw{stroke-dashoffset:0}
+.pop{opacity:0;transform:translateY(6px);transition:opacity .5s,transform .5s cubic-bezier(.3,.9,.2,1)}
+.go .pop{opacity:1;transform:none}
+
+/* chapters */
+.chap{padding:72px 0;border-top:1px solid var(--hair2)}
+.chap-h{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:baseline;margin-bottom:12px}
+.chap-n{font-family:var(--display);font-size:56px;line-height:.9;font-weight:400;color:var(--hair2);letter-spacing:-.04em}
+.chap-h h2{font-size:clamp(28px,3.4vw,42px);max-width:24ch}
+.chap-lede{color:var(--ink2);font-size:17px;max-width:64ch;margin:0 0 36px}
+.fine{font-size:13.5px;color:var(--ink3)}
+.note{display:flex;gap:12px;font-size:14px;color:var(--ink2);margin-top:20px;max-width:72ch}
+.note::before{content:"";flex:0 0 3px;border-radius:3px;background:var(--hair2)}
+.card{background:var(--surface);border-radius:24px;box-shadow:var(--lift)}
+.verdict{margin-top:26px;display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 14px;padding-top:18px;border-top:1px solid var(--hair)}
+.verdict span{font-size:13px;color:var(--ink3)}
+.verdict b{font-family:var(--display);font-size:22px}
+.verdict em{font-style:normal;font-size:14px;color:var(--ink2)}
+.seg{position:relative;display:inline-grid;grid-auto-flow:column;grid-auto-columns:1fr;background:var(--well);border-radius:12px;padding:4px;isolation:isolate;max-width:100%}
+.seg button{position:relative;z-index:1;padding:8px 14px;font-size:14px;font-weight:600;color:var(--ink2);white-space:nowrap;border-radius:9px;text-align:center;transition:color .3s}
+.seg button[aria-pressed="true"]{color:var(--ink)}
+.seg .ind{position:absolute;z-index:0;top:4px;bottom:4px;border-radius:9px;background:var(--surface);box-shadow:0 1px 2px rgba(15,27,45,.08),0 4px 12px -4px rgba(15,27,45,.18);transition:left .45s cubic-bezier(.3,.9,.2,1),width .45s cubic-bezier(.3,.9,.2,1)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:10px;background:var(--ink);color:#fff;font-weight:600;font-size:14px}
+.btn.sec{background:var(--well);color:var(--ink)}
+
+/* 1 layers */
+.layers{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:40px;align-items:center}
+.lstack{display:flex;flex-direction:column;gap:10px}
+.lrow{display:grid;grid-template-columns:150px 1fr;align-items:stretch;gap:14px}
+.lrow .who{font-family:var(--display);font-weight:700;font-size:19px;align-self:center}
+.bars{display:flex;gap:6px}
+.blk{border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.35;color:#fff;flex:1;opacity:0;transform:scaleX(.6);transform-origin:left;transition:opacity .5s,transform .6s cubic-bezier(.3,.9,.2,1)}
+.blk b{display:block;font-size:14.5px}
+.blk small{opacity:.85;font-size:12.5px}
+.in .blk{opacity:1;transform:none}
+.blk.k0{background:var(--ink)} .blk.k1{background:var(--com)} .blk.k2{background:var(--ent)}
+.same{display:grid;gap:14px}
+.same .chip{display:flex;gap:12px;align-items:center;padding:14px 16px;background:var(--surface);border-radius:14px;box-shadow:var(--lift);font-weight:600}
+.same .chip i{width:28px;height:28px;border-radius:8px;background:var(--oss-t);display:grid;place-items:center;flex:0 0 auto}
+
+/* 2 sorter */
+.sorter{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.bucket{background:var(--surface);border-radius:20px;box-shadow:var(--lift);padding:18px;display:flex;flex-direction:column;gap:12px;min-height:260px}
+.bucket header h3{font-size:17px;line-height:1.25}
+.bucket header p{font-size:13px;color:var(--ink3);margin-top:4px}
+.bucket header .n{font-family:var(--display);font-size:34px;font-weight:700;line-height:1;color:var(--c);display:block;margin-bottom:6px}
+.bucket .pile{display:flex;flex-wrap:wrap;gap:6px;align-content:flex-start}
+.cap{border:1.5px solid var(--hair2);border-radius:999px;padding:6px 12px;font-size:13.5px;font-weight:600;background:var(--soft);opacity:0;transform:translateY(-14px) scale(.96);transition:opacity .45s,transform .55s cubic-bezier(.3,1.3,.4,1),border-color .2s,background .2s,color .2s}
+.sorted .cap{opacity:1;transform:none}
+.cap.pend{border-style:dashed}
+.cap[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.capdet{margin-top:16px;display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:0;min-height:150px;overflow:hidden}
+.capdet .l{padding:24px;border-right:1px solid var(--hair)}
+.capdet .l h3{font-size:24px}
+.capdet .l p{margin-top:8px;font-size:14.5px;color:var(--ink2)}
+.capdet .r{display:grid;grid-template-columns:repeat(3,1fr)}
+.capdet .r div{padding:24px 20px;border-right:1px solid var(--hair)}
+.capdet .r div:last-child{border-right:0}
+.capdet .r span{font-size:13px;font-weight:600}
+.capdet .r b{display:block;font-family:var(--display);font-size:20px;margin-top:6px;line-height:1.25}
+.y{color:var(--pos)} .x{color:var(--neg)} .m{color:var(--amber)}
+
+/* 3 waf */
+.waf{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:0;overflow:hidden}
+.waf-t{padding:28px 30px}
+.own{width:100%;border-collapse:collapse;font-size:14.5px;margin-top:16px}
+.own th,.own td{padding:12px 10px;border-bottom:1px solid var(--hair);text-align:left;vertical-align:middle}
+.own th{font-size:13px;color:var(--ink3);font-weight:600}
+.own tr:last-child td{border-bottom:0}
+.who-chip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:13px;font-weight:600;white-space:nowrap;transition:background .3s,color .3s}
+.who-chip i{width:7px;height:7px;border-radius:50%;background:currentColor}
+.w-fpt{background:var(--ent-t);color:#B23C0F} .w-tet{background:var(--com-t);color:var(--com)}
+.own code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;background:var(--well);padding:2px 6px;border-radius:6px}
+.effort{padding:28px 30px;background:var(--soft);border-left:1px solid var(--hair)}
+.effort h4{font-size:18px}
+.meterbig{margin-top:18px;display:grid;gap:14px}
+.mb span{font-size:13px;color:var(--ink2);display:flex;justify-content:space-between}
+.mb .t{height:12px;border-radius:999px;background:var(--well);overflow:hidden;margin-top:6px}
+.mb .t i{display:block;height:100%;border-radius:999px;width:0;transition:width .7s cubic-bezier(.3,.9,.2,1)}
+.effort .key{margin-top:22px;padding:16px;border-radius:14px;background:var(--surface);border:1px solid var(--hair);font-size:14.5px}
+
+/* 4 enterprise */
+.ex{display:grid;grid-template-columns:250px minmax(0,1fr);overflow:hidden}
+.plist{border-right:1px solid var(--hair);padding:10px;display:flex;flex-direction:column;gap:2px;background:var(--soft)}
+.ptab{display:grid;gap:2px;padding:14px;border-radius:12px;transition:background .2s}
+.ptab .t{font-weight:600;font-size:15px;line-height:1.3}
+.ptab .s{font-size:12.5px;color:var(--ink3)}
+.ptab .s b{font-weight:600}
+.ptab:hover{background:var(--well)}
+.ptab[aria-selected="true"]{background:var(--surface);box-shadow:0 1px 2px rgba(15,27,45,.06),0 6px 16px -10px rgba(15,27,45,.25)}
+.pp{padding:34px 38px 38px;min-width:0}
+.pp[hidden]{display:none}
+.pp h3{font-size:28px;max-width:26ch}
+.pp .intro{margin-top:10px;color:var(--ink2);max-width:64ch}
+
+.flowhead{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:24px}
+.alert{display:inline-flex;align-items:center;gap:10px;padding:8px 14px;border-radius:10px;background:var(--neg-t);color:var(--neg);font-weight:600;font-size:14px}
+.alert i{width:8px;height:8px;border-radius:50%;background:var(--neg);animation:ring 1.6s infinite}
+@keyframes ring{0%{box-shadow:0 0 0 0 rgba(194,58,58,.45)}70%{box-shadow:0 0 0 7px rgba(194,58,58,0)}100%{box-shadow:0 0 0 0 rgba(194,58,58,0)}}
+.flow{margin-top:18px;display:grid;gap:0;position:relative}
+.fs{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:14px;align-items:start;padding:14px 0;border-bottom:1px solid var(--hair)}
+.fs:last-child{border-bottom:0}
+.fs .num{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-weight:700;background:var(--well);color:var(--ink2)}
+.fs h4{font-family:var(--text);font-size:15.5px;font-weight:600}
+.fs p{font-size:14px;color:var(--ink2);margin-top:2px;transition:opacity .25s}
+.fs .who-chip{margin-top:4px}
+.summary{margin-top:16px;padding:16px 18px;border-radius:14px;font-size:15px;font-weight:600;transition:background .3s,color .3s}
+
+.tlv{margin-top:30px}
+.trow{display:grid;grid-template-columns:140px minmax(0,1fr);gap:14px;align-items:center;margin:12px 0}
+.trow b{font-size:14px;line-height:1.3}
+.trow b small{display:block;color:var(--ink3);font-weight:500;font-size:12.5px}
+.track{position:relative;height:34px;background:var(--well);border-radius:8px;overflow:hidden}
+.tbar{position:absolute;inset:0 auto 0 0;width:0;border-radius:8px;transition:width 1.4s cubic-bezier(.25,.9,.25,1);display:flex;align-items:center;justify-content:flex-end;padding-right:10px;color:#fff;font-weight:700;font-size:13px;white-space:nowrap}
+.tbar.o{background:var(--oss)} .tbar.e{background:var(--ent)}
+.tbar.q{background:repeating-linear-gradient(135deg,var(--oss-t) 0 7px,#fff 7px 14px);border:1.5px dashed var(--oss);color:var(--oss)}
+.tick{display:grid;grid-template-columns:140px minmax(0,1fr);gap:14px;font-size:12px;color:var(--ink3)}
+.tick div{display:flex;justify-content:space-between}
+
+.match{margin-top:22px;border:1px solid var(--hair);border-radius:18px;overflow:hidden}
+.match-h{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 16px;background:var(--soft);border-bottom:1px solid var(--hair)}
+.live{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600}
+.live i{width:8px;height:8px;border-radius:50%;background:#E5343F;animation:ring 1.6s infinite}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr)}
+.kpis div{padding:16px;border-right:1px solid var(--hair)}
+.kpis div:last-child{border-right:0}
+.kpis span{font-size:12.5px;color:var(--ink3)}
+.kpis b{display:block;font-family:var(--display);font-size:30px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums;transition:color .3s}
+.kpis .bad b{color:var(--neg)}
+.match .fine{padding:10px 16px;border-top:1px solid var(--hair);background:var(--soft)}
+.team{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:28px;margin-top:26px;align-items:start}
+.team svg{display:block;width:100%;height:auto}
+.deep h4{font-size:18px}
+.deep .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.deep .chips button{border:1.5px solid var(--hair2);border-radius:999px;padding:6px 12px;font-size:13.5px;font-weight:600;transition:all .2s}
+.deep .chips button[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.deep .dd{margin-top:12px;font-size:14.5px;color:var(--ink2);min-height:66px}
+.warnbox{margin-top:18px;padding:16px 18px;border-radius:14px;background:var(--amber-t);color:#5E3B06;font-size:14.5px}
+.warnbox b{display:block;margin-bottom:2px}
+
+.ph3{margin-top:24px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.phc{border:1.5px solid var(--hair);border-radius:16px;padding:18px;transition:border-color .3s,background .3s,opacity .3s}
+.phc h4{font-size:18px}
+.phc p{font-size:14px;color:var(--ink2);margin-top:8px}
+.phc .st{margin-top:12px;font-weight:700;font-size:14px}
+.compare-row{margin-top:18px}
+.phc.lo{opacity:.4}
+.phc.hi{border-color:var(--ink);background:var(--soft)}
+
+/* 5 matrix */
+.mxw{overflow-x:auto}
+.mx{width:100%;min-width:680px;border-collapse:collapse;font-size:15px}
+.mx th,.mx td{padding:13px 18px;text-align:left;border-bottom:1px solid var(--hair);transition:opacity .3s,background .3s}
+.mx thead th{font-family:var(--display);font-size:18px;padding-top:20px}
+.mx thead th:nth-child(2){color:var(--oss)} .mx thead th:nth-child(3){color:var(--com)} .mx thead th:nth-child(4){color:var(--ent)}
+.mx tbody tr:last-child td{border-bottom:0}
+.mx td:first-child{font-weight:500;color:var(--ink2)}
+.ic{display:inline-flex;align-items:center;gap:6px;font-weight:600}
+.ic svg{flex:0 0 auto}
+.mx.diff tr.eq td{opacity:.28}
+.mx tr.df td:first-child{color:var(--ink)}
+.mx-h{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:18px 18px 0}
+.sw{display:flex;align-items:center;gap:12px;font-size:14.5px;font-weight:500}
+.switch{position:relative;flex:0 0 48px;height:28px;border-radius:999px;background:var(--hair2);transition:background .25s}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(15,27,45,.3);transition:transform .3s cubic-bezier(.3,.9,.2,1)}
+.switch[aria-checked="true"]{background:var(--ink)}
+.switch[aria-checked="true"]::after{transform:translateX(20px)}
+
+/* 6 value */
+.val{padding:10px 28px}
+.vr{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,5fr) minmax(0,3fr);gap:20px;align-items:center;padding:16px 0;border-bottom:1px solid var(--hair);transition:opacity .35s}
+.vr:last-child{border-bottom:0}
+.vr h4{font-family:var(--text);font-size:15.5px;font-weight:600}
+.vr p{font-size:13px;color:var(--ink3)}
+.lv{position:relative;height:26px}
+.lv::before{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:repeating-linear-gradient(90deg,var(--hair2) 0 4px,transparent 4px 8px)}
+.lv .stem{position:absolute;left:0;top:50%;height:3px;margin-top:-1.5px;border-radius:3px;width:0;background:var(--c);transition:width 1s cubic-bezier(.25,.9,.25,1)}
+.lv .pin{position:absolute;top:50%;left:0;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;background:var(--c);box-shadow:0 0 0 4px #fff;transition:left 1s cubic-bezier(.25,.9,.25,1)}
+.lv .pin.unk{background:#fff;border:2px dashed var(--ink3);box-shadow:none}
+.lvl{font-size:13px;font-weight:700;margin-top:4px}
+.excl{font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px}
+.excl.yes{background:var(--ent-t);color:#B23C0F}
+.excl.no{background:var(--well);color:var(--ink2)}
+.excl.unk{background:var(--amber-t);color:var(--amber)}
+.vhead{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,5fr) minmax(0,3fr);gap:20px;font-size:12.5px;color:var(--ink3);padding:14px 0 8px;border-bottom:1px solid var(--hair)}
+.vhead .sc{display:flex;justify-content:space-between}
+.vr.dim{opacity:.22}
+.insight{margin-top:20px;padding:22px 26px;display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start;opacity:0;transform:translateY(8px);transition:opacity .4s,transform .4s;pointer-events:none}
+.insight.show{opacity:1;transform:none;pointer-events:auto}
+.insight p{font-family:var(--display);font-size:21px;font-weight:500;line-height:1.35}
+
+/* 7 decide */
+.dec{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:32px;align-items:start}
+.ladder{padding:10px}
+.rung{width:100%;display:grid;grid-template-columns:minmax(0,1fr);gap:8px;padding:16px 18px;border-radius:16px;transition:background .2s}
+.rung:hover{background:var(--soft)}
+.rung[aria-pressed="true"]{background:var(--well)}
+.rung .top2{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.rung h4{font-family:var(--text);font-size:16px;font-weight:600}
+.rung .pr{font-family:var(--display);font-weight:700;font-size:15px;white-space:nowrap}
+.rung .t{height:10px;border-radius:999px;background:var(--well);overflow:hidden}
+.rung[aria-pressed="true"] .t{background:#fff}
+.rung .t i{display:block;height:100%;border-radius:999px;width:0;transition:width 1s cubic-bezier(.3,.9,.2,1)}
+.rung .t i.dash{background:repeating-linear-gradient(90deg,var(--amber) 0 8px,transparent 8px 12px)!important}
+.ddet{padding:26px 28px}
+.ddet h3{font-size:24px}
+.ddet .pr{margin-top:4px;font-weight:700}
+.ddet p{margin-top:12px;color:var(--ink2)}
+.qs{margin-top:44px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.q{padding:24px;display:flex;flex-direction:column;gap:12px}
+.q .qn{font-family:var(--display);font-size:42px;font-weight:700;line-height:1;color:var(--ent)}
+.q h4{font-size:19px;line-height:1.3}
+.q .why{font-size:14px;color:var(--ink2);border-top:1px solid var(--hair);padding-top:12px;margin-top:auto}
+.q .why b{display:block;color:var(--ink);font-size:13px;margin-bottom:2px}
+
+.closing{padding:110px 0;background:var(--surface);border-top:1px solid var(--hair2)}
+.closing p.a{font-family:var(--display);font-size:clamp(24px,3vw,36px);color:var(--ink3);font-weight:500;letter-spacing:-.02em;line-height:1.25;max-width:32ch}
+.closing p.b{font-family:var(--display);font-size:clamp(32px,4.4vw,58px);font-weight:800;letter-spacing:-.035em;line-height:1.06;max-width:22ch;margin-top:16px}
+.closing .fine{margin-top:36px;max-width:72ch}
+
+@media (max-width:980px){
+  .hero-grid,.layers,.waf,.team,.dec,.capdet{grid-template-columns:minmax(0,1fr)}
+  .effort{border-left:0;border-top:1px solid var(--hair)}
+  .capdet .l{border-right:0;border-bottom:1px solid var(--hair)}
+  .sorter{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .ex{grid-template-columns:minmax(0,1fr)}
+  .plist{flex-direction:row;overflow-x:auto;border-right:0;border-bottom:1px solid var(--hair)}
+  .ptab{flex:0 0 190px}
+  .pp{padding:26px 22px 30px}
+  .qs{grid-template-columns:minmax(0,1fr)}
+  .nav{display:none}
+}
+@media (max-width:620px){
+  .shell{padding:0 18px}
+  .sorter,.split,.ph3,.kpis{grid-template-columns:minmax(0,1fr)}
+  .bucket{min-height:0}
+  .split div+div{padding-left:0;border-left:0;border-top:1px solid var(--hair2)}
+  .kpis div{border-right:0;border-bottom:1px solid var(--hair)}
+  .capdet .r{grid-template-columns:minmax(0,1fr)}
+  .capdet .r div{border-right:0;border-bottom:1px solid var(--hair);padding:14px 20px}
+  .lrow{grid-template-columns:minmax(0,1fr);gap:6px}
+  .bars{flex-direction:column}
+  .vr,.vhead{grid-template-columns:minmax(0,1fr);gap:8px}
+  .vhead{display:none}
+  .val{padding:6px 18px}
+  .trow,.tick{grid-template-columns:minmax(0,1fr);gap:4px}
+  .tick>span{display:none}
+  .fs{grid-template-columns:36px minmax(0,1fr)}
+  .chap-n{font-size:40px}
+  .waf-t,.effort{padding:22px 18px}
+  .own{font-size:13.5px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="shell">
+    <div class="brand">
+      <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><path d="M4 11h6M10 11l6-6M10 11l6 0M10 11l6 6" stroke="#0F1B2D" stroke-width="1.8" stroke-linecap="round" fill="none"/><circle cx="4" cy="11" r="2.4" fill="#0F1B2D"/><circle cx="17" cy="5" r="2.2" fill="#0D7A63"/><circle cx="17" cy="11" r="2.2" fill="#2A57C2"/><circle cx="17" cy="17" r="2.2" fill="#E4501B"/></svg>
+      Khác biệt thật giữa ba phiên bản
+    </div>
+    <nav class="nav" aria-label="Mục lục">
+      <a href="#c1">Bản chất</a><a href="#c2">Hai loại khác biệt</a><a href="#c3">Community</a><a href="#c4">Enterprise</a><a href="#c5">Bảng năng lực</a><a href="#c6">Giá trị</a><a href="#c7">Quyết định</a>
+    </nav>
+  </div>
+  <div class="readbar" id="readbar"></div>
+</header>
+
+<div class="shell">
+<section class="hero">
+  <div class="hero-grid">
+    <div>
+      <h1>Khác biệt không nằm ở năng lực xử lý API. <span>Nó nằm ở ai chịu trách nhiệm.</span></h1>
+      <p class="lede">Ba phiên bản được xây từ cùng một mã nguồn. Câu hỏi đúng không phải “OSS thiếu gì”, mà là “FPT Play phải tự làm gì”.</p>
+      <div class="split">
+        <div><b>OSS không có</b><p>Năng lực mà bản OSS thực sự không thể cung cấp.</p></div>
+        <div><b>OSS làm được, nhưng phải tự xây</b><p>FPT Play tự tích hợp, tự bảo trì, tự chịu trách nhiệm vận hành.</p></div>
+      </div>
+    </div>
+    <div class="tree" id="tree">
+      <svg viewBox="0 0 560 360" role="img" aria-label="Sơ đồ: ba phiên bản được xây từ cùng mã nguồn, Helm Chart, API và CRD; Community thêm module WAF; Enterprise thêm Hardened Envoy và vòng đời dài">
+        <g font-family="Be Vietnam Pro, sans-serif">
+          <rect x="16" y="130" width="170" height="100" rx="16" fill="#0F1B2D"/>
+          <text x="34" y="164" fill="#fff" font-size="15" font-weight="700">Cùng mã nguồn</text>
+          <text x="34" y="187" fill="#B9C2D3" font-size="12.5">Helm Chart</text>
+          <text x="34" y="205" fill="#B9C2D3" font-size="12.5">API và CRD</text>
+          <path class="draw" d="M186 180 C240 180 240 60 290 60" fill="none" stroke="#0D7A63" stroke-width="2.5"/>
+          <path class="draw" d="M186 180 C240 180 240 180 290 180" fill="none" stroke="#2A57C2" stroke-width="2.5" style="transition-delay:.15s"/>
+          <path class="draw" d="M186 180 C240 180 240 300 290 300" fill="none" stroke="#E4501B" stroke-width="2.5" style="transition-delay:.3s"/>
+          <g class="pop" style="transition-delay:.9s">
+            <rect x="290" y="30" width="254" height="60" rx="14" fill="#E3F3EE"/>
+            <text x="308" y="56" fill="#0D7A63" font-size="15" font-weight="700">OSS</text>
+            <text x="308" y="76" fill="#47536B" font-size="12.5">Giải quyết bài toán API Gateway</text>
+          </g>
+          <g class="pop" style="transition-delay:1.1s">
+            <rect x="290" y="140" width="254" height="80" rx="14" fill="#E6ECFA"/>
+            <text x="308" y="166" fill="#2A57C2" font-size="15" font-weight="700">Community</text>
+            <text x="308" y="186" fill="#47536B" font-size="12.5">Giảm công sức tích hợp</text>
+            <text x="308" y="206" fill="#2A57C2" font-size="12.5" font-weight="600">+ Module WAF đóng gói sẵn</text>
+          </g>
+          <g class="pop" style="transition-delay:1.3s">
+            <rect x="290" y="250" width="254" height="96" rx="14" fill="#FDECE4"/>
+            <text x="308" y="276" fill="#E4501B" font-size="15" font-weight="700">Enterprise</text>
+            <text x="308" y="296" fill="#47536B" font-size="12.5">Giảm gánh nặng bảo trì và rủi ro</text>
+            <text x="308" y="316" fill="#B23C0F" font-size="12.5" font-weight="600">+ Tetrate Hardened Envoy</text>
+            <text x="308" y="334" fill="#B23C0F" font-size="12.5" font-weight="600">+ Vòng đời hỗ trợ ~12 tháng</text>
+          </g>
+        </g>
+      </svg>
+      <p class="tcap">Sơ đồ minh họa giá trị bổ sung theo từng phiên bản, không phải kiến trúc triển khai vật lý.</p>
+    </div>
+  </div>
+</section>
+</div>
+
+<div class="shell">
+<!-- 1 -->
+<section class="chap" id="c1">
+  <div class="chap-h"><span class="chap-n">1</span><h2>Mỗi phiên bản giải một bài toán khác nhau</h2></div>
+  <p class="chap-lede">Tetrate xác nhận các phiên bản TEG dùng chung mã nguồn, Helm Chart, API và CRD. Community và Enterprise không phải hai sản phẩm có năng lực xử lý API khác nhau.</p>
+  <div class="layers" id="layers">
+    <div class="lstack">
+      <div class="lrow"><span class="who" style="color:var(--oss)">OSS</span><div class="bars"><div class="blk k0"><b>API Gateway</b><small>Bài toán xử lý API</small></div></div></div>
+      <div class="lrow"><span class="who" style="color:var(--com)">Community</span><div class="bars"><div class="blk k0" style="transition-delay:.1s"><b>API Gateway</b><small>Như OSS</small></div><div class="blk k1" style="transition-delay:.35s"><b>Giảm tích hợp</b><small>WAF đóng gói sẵn</small></div></div></div>
+      <div class="lrow"><span class="who" style="color:var(--ent)">Enterprise</span><div class="bars"><div class="blk k0" style="transition-delay:.2s"><b>API Gateway</b><small>Như OSS</small></div><div class="blk k1" style="transition-delay:.45s"><b>Giảm tích hợp</b><small>WAF đóng gói sẵn</small></div><div class="blk k2" style="transition-delay:.7s"><b>Giảm bảo trì</b><small>Hardened, vòng đời dài</small></div></div></div>
+    </div>
+    <div class="same">
+      <div class="chip"><i><svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="#0D7A63" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></i>Cùng mã nguồn</div>
+      <div class="chip"><i><svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="#0D7A63" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></i>Cùng Helm Chart</div>
+      <div class="chip"><i><svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="#0D7A63" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></i>Cùng API và CRD</div>
+      <p class="fine">Khác biệt chủ yếu nằm ở cách đóng gói phần mềm, bảo mật và bảo trì hệ thống.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="chap" id="c2">
+  <div class="chap-h"><span class="chap-n">2</span><h2>Xếp từng năng lực vào đúng loại khác biệt</h2></div>
+  <p class="chap-lede">Mười hai năng lực trong bảng so sánh, xếp theo câu hỏi: OSS thực sự không có, hay chỉ là FPT Play phải tự làm? Chọn một năng lực để xem chi tiết. Viền nét đứt là điểm còn chờ Tetrate xác nhận.</p>
+  <div class="sorter" id="sorter">
+    <div class="bucket" style="--c:var(--ink)"><header><span class="n" data-b="eq">0</span><h3>Ngang nhau ở cả ba</h3><p>Năng lực xử lý API cốt lõi</p></header><div class="pile" data-b="eq"></div></div>
+    <div class="bucket" style="--c:var(--com)"><header><span class="n" data-b="diy">0</span><h3>OSS làm được, phải tự xây hoặc mua thêm</h3><p>Khác biệt về effort, không về năng lực</p></header><div class="pile" data-b="diy"></div></div>
+    <div class="bucket" style="--c:var(--ent)"><header><span class="n" data-b="ent">0</span><h3>Chỉ Enterprise có sẵn</h3><p>Khác biệt thật, một phần chưa xác nhận</p></header><div class="pile" data-b="ent"></div></div>
+    <div class="bucket" style="--c:var(--neg)"><header><span class="n" data-b="worse">0</span><h3>Community kém hơn OSS</h3><p>Ràng buộc chỉ có ở bản miễn phí</p></header><div class="pile" data-b="worse"></div></div>
+  </div>
+  <div class="card capdet" id="capdet" aria-live="polite"></div>
+</section>
+
+<!-- 3 -->
+<section class="chap" id="c3">
+  <div class="chap-h"><span class="chap-n">3</span><h2>Community so với OSS: tích hợp WAF</h2></div>
+  <p class="chap-lede">Giả sử FPT Play muốn chặn SQL Injection, XSS hoặc payload độc hại ngay tại API Gateway. Chuyển qua lại để xem ai làm từng việc.</p>
+  <div class="card waf">
+    <div class="waf-t">
+      <div class="seg" id="segWaf" role="group" aria-label="Phiên bản"><span class="ind" aria-hidden="true"></span><button data-v="o" aria-pressed="true">OSS</button><button data-v="c" aria-pressed="false">Community</button></div>
+      <div style="overflow-x:auto"><table class="own" id="own">
+        <thead><tr><th>Công việc</th><th>Ai chịu trách nhiệm</th></tr></thead>
+        <tbody></tbody>
+      </table></div>
+    </div>
+    <div class="effort">
+      <h4>Phần FPT Play phải tự làm</h4>
+      <div class="meterbig">
+        <div class="mb"><span>OSS <b id="eO">5/5 việc</b></span><div class="t"><i id="bO" style="background:var(--oss)"></i></div></div>
+        <div class="mb"><span>Community <b id="eC">2/5 việc</b></span><div class="t"><i id="bC" style="background:var(--com)"></i></div></div>
+      </div>
+      <p class="key">Chính tài liệu Envoy Gateway OSS v1.10 đã hướng dẫn tích hợp Coraza WAF. Community chủ yếu tiết kiệm effort tích hợp và bảo trì module, không mang lại năng lực bảo mật mà OSS hoàn toàn không làm được.</p>
+      <p class="note">Tuning WAF rule vẫn do FPT Play tự làm ở cả hai phiên bản.</p>
+    </div>
+  </div>
+  <div class="verdict"><span>Giá trị với FPT Play</span><b>Thấp đến trung bình</b><em>vì FPT Play đã có hạ tầng WAF do CSOC quản lý</em></div>
+</section>
+
+<!-- 4 -->
+<section class="chap" id="c4">
+  <div class="chap-h"><span class="chap-n">4</span><h2>Enterprise có gì mà OSS và Community không có sẵn</h2></div>
+  <p class="chap-lede">Bốn khác biệt, mỗi khác biệt kèm phạm vi: so với phiên bản nào thì nó thực sự là lợi thế.</p>
+  <div class="card ex">
+    <div class="plist" role="tablist" aria-label="Khác biệt của Enterprise">
+      <button class="ptab" role="tab" id="et0" aria-controls="ep0" aria-selected="true"><span class="t">Vá lỗi bảo mật Envoy</span><span class="s"><b>Rất cao</b>, nếu có cam kết</span></button>
+      <button class="ptab" role="tab" id="et1" aria-controls="ep1" aria-selected="false" tabindex="-1"><span class="t">Vòng đời dài hơn</span><span class="s"><b>Cao</b></span></button>
+      <button class="ptab" role="tab" id="et2" aria-controls="ep2" aria-selected="false" tabindex="-1"><span class="t">Chuyên gia khi có sự cố Live</span><span class="s"><b>Rất cao</b>, nhưng mua được cho OSS</span></button>
+      <button class="ptab" role="tab" id="et3" aria-controls="ep3" aria-selected="false" tabindex="-1"><span class="t">Kiểm soát Phone Home</span><span class="s">Chỉ hơn Community</span></button>
+    </div>
+
+    <div class="pp" role="tabpanel" id="ep0" aria-labelledby="et0">
+      <h3>Có đơn vị chuyên trách vá lỗi bảo mật cho Envoy</h3>
+      <p class="intro">Toàn bộ API Backend đã chạy sau Envoy Gateway. Một ngày, CSOC báo có CVE nghiêm trọng trên Envoy Proxy. Chọn phiên bản để xem ai gánh từng bước.</p>
+      <div class="flowhead">
+        <span class="alert"><i></i>Critical CVE trên Envoy Proxy</span>
+        <div class="seg" id="segCve" role="group" aria-label="Phiên bản"><span class="ind" aria-hidden="true"></span><button data-v="o" aria-pressed="true">OSS</button><button data-v="c" aria-pressed="false">Community</button><button data-v="e" aria-pressed="false">Enterprise</button></div>
+      </div>
+      <div class="flow" id="flow"></div>
+      <p class="summary" id="cveSum"></p>
+      <p class="note">Từ TEG v1.10, Enterprise dùng Tetrate Hardened Envoy, còn Community vẫn dùng Envoy upstream. Phân vai ở chế độ Enterprise là minh họa: cần Tetrate chứng minh thời gian cung cấp bản vá nhanh hơn trong thực tế.</p>
+      <div class="verdict"><span>Giá trị</span><b>Rất cao</b><em>nếu có cam kết xử lý CVE phù hợp</em></div>
+    </div>
+
+    <div class="pp" role="tabpanel" id="ep1" aria-labelledby="et1" hidden>
+      <h3>Kéo dài vòng đời sử dụng công nghệ</h3>
+      <p class="intro">Duy trì một nhánh phiên bản ổn định lâu hơn mà vẫn nhận bản vá, giảm áp lực nâng cấp lớn trên nhiều Kubernetes cluster.</p>
+      <div class="tlv" id="tlv">
+        <div class="tick"><span></span><div><span>11/2026</span><span>05/2027</span><span>11/2027</span></div></div>
+        <div class="trow"><b>OSS 1.10.x<small>Upstream, 6 tháng</small></b><div class="track"><div class="tbar o" data-w="50">EOL 05/05/2027</div></div></div>
+        <div class="trow"><b>Enterprise 1.10.x<small>Subscription, ~12 tháng</small></b><div class="track"><div class="tbar e" data-w="100">EOS 01/11/2027</div></div></div>
+        <div class="trow"><b>OSS + Support<small>Chưa xác nhận</small></b><div class="track"><div class="tbar q" data-w="100">?</div></div></div>
+      </div>
+      <p class="note">Hai dòng đầu kiểm chứng được từ chính sách hỗ trợ của hai sản phẩm. Dòng thứ ba là câu hỏi mở: nếu mua support cho OSS, FPT Play có được vòng đời mở rộng tương đương không?</p>
+      <div class="verdict"><span>Giá trị</span><b>Cao</b></div>
+    </div>
+
+    <div class="pp" role="tabpanel" id="ep2" aria-labelledby="et2" hidden>
+      <h3>Có chuyên gia hỗ trợ khi sự cố xảy ra giữa sự kiện Live</h3>
+      <p class="intro">Đang diễn ra một trận Ngoại hạng Anh thì Gateway gặp sự cố.</p>
+      <div class="match">
+        <div class="match-h"><span class="live"><i></i>Ngoại hạng Anh, trực tiếp</span><button class="btn" id="incBtn">Mô phỏng sự cố</button></div>
+        <div class="kpis">
+          <div><span>Incoming traffic</span><b id="kR">0 RPS</b></div>
+          <div id="kEw"><span>HTTP 5xx</span><b id="kE">0%</b></div>
+          <div id="kPw"><span>P99 latency</span><b id="kP">0 s</b></div>
+        </div>
+        <p class="fine">Số liệu giả định minh họa tình huống, không phải dữ liệu Production.</p>
+      </div>
+      <div class="team">
+        <div>
+          <div class="seg" id="segSup" role="group" aria-label="Mô hình hỗ trợ"><span class="ind" aria-hidden="true"></span><button data-v="0" aria-pressed="true">Tự vận hành</button><button data-v="1" aria-pressed="false">Có Commercial Support</button></div>
+          <svg viewBox="0 0 420 250" id="teamSvg" style="margin-top:14px" role="img" aria-label="Sơ đồ phối hợp xử lý sự cố">
+            <g font-family="Be Vietnam Pro, sans-serif" font-size="13" font-weight="600">
+              <g stroke="#D2D8E2" stroke-width="1.5"><line x1="150" y1="125" x2="60" y2="50"/><line x1="150" y1="125" x2="240" y2="50"/><line x1="150" y1="125" x2="60" y2="200"/><line x1="150" y1="125" x2="240" y2="200"/></g>
+              <path id="esc" d="M190 125 L330 125" stroke="#2A57C2" stroke-width="2.5" stroke-dasharray="6 5" fill="none" style="transition:opacity .4s;opacity:0"><animate attributeName="stroke-dashoffset" from="22" to="0" dur="1s" repeatCount="indefinite"/></path>
+              <circle cx="150" cy="125" r="40" fill="#FBE9E9"/><text x="150" y="121" text-anchor="middle" fill="#C23A3A">Sự cố</text><text x="150" y="138" text-anchor="middle" fill="#C23A3A" font-weight="500" font-size="11.5">Gateway</text>
+              <g fill="#0F1B2D"><rect x="16" y="32" width="88" height="36" rx="10" fill="#fff" stroke="#D2D8E2"/><text x="60" y="55" text-anchor="middle">DevOps</text>
+              <rect x="196" y="32" width="88" height="36" rx="10" fill="#fff" stroke="#D2D8E2"/><text x="240" y="55" text-anchor="middle">Backend</text>
+              <rect x="16" y="182" width="88" height="36" rx="10" fill="#fff" stroke="#D2D8E2"/><text x="60" y="205" text-anchor="middle">Network</text>
+              <rect x="196" y="182" width="88" height="36" rx="10" fill="#fff" stroke="#D2D8E2"/><text x="240" y="205" text-anchor="middle">CSOC</text></g>
+              <g id="tet" style="transition:opacity .4s,transform .5s;opacity:0;transform:translateX(16px)"><rect x="330" y="98" width="80" height="54" rx="12" fill="#E6ECFA" stroke="#2A57C2"/><text x="370" y="121" text-anchor="middle" fill="#2A57C2">Tetrate</text><text x="370" y="138" text-anchor="middle" fill="#2A57C2" font-weight="500" font-size="11.5">chuyên gia</text></g>
+            </g>
+          </svg>
+          <p class="fine" id="supCap">DevOps, Backend, Network và CSOC tự phối hợp điều tra lỗi.</p>
+        </div>
+        <div class="deep">
+          <h4>Khi lỗi nằm sâu trong Envoy Proxy</h4>
+          <p class="fine" style="margin-top:4px">Chuyên gia sản phẩm có thể giúp khoanh vùng nguyên nhân với các loại lỗi như:</p>
+          <div class="chips" id="chips">
+            <button aria-pressed="true" data-i="0">Memory leak</button><button aria-pressed="false" data-i="1">HTTP/2 connection management</button><button aria-pressed="false" data-i="2">Worker thread</button><button aria-pressed="false" data-i="3">xDS configuration</button>
+          </div>
+          <p class="dd" id="dd"></p>
+          <div class="warnbox"><b>Không phải giá trị độc quyền của Enterprise</b>Theo email của Huabing, FPT Play cũng có thể mua hỗ trợ cho bản OSS. Đây là giá trị của Commercial Support. Premium Support của Tetrate công bố hỗ trợ 24/7 cho sự cố Sev 1 và Sev 2.</div>
+        </div>
+      </div>
+      <div class="verdict"><span>Giá trị</span><b>Rất cao</b><em>nhưng có thể mua cho cả OSS</em></div>
+    </div>
+
+    <div class="pp" role="tabpanel" id="ep3" aria-labelledby="et3" hidden>
+      <h3>Kiểm soát dữ liệu gửi ra ngoài Private Cloud</h3>
+      <p class="intro">Community gửi thông tin phiên bản và định danh cluster/instance về Tetrate, không tắt được bằng cấu hình. Enterprise mặc định tắt. Theo hãng, không có dữ liệu traffic hay thông tin client nào được thu thập.</p>
+      <div class="compare-row"><div class="seg" id="segPh" role="group" aria-label="So với"><span class="ind" aria-hidden="true"></span><button data-v="c" aria-pressed="true">Enterprise so với Community</button><button data-v="o" aria-pressed="false">Enterprise so với OSS</button></div></div>
+      <div class="ph3" id="ph3">
+        <div class="phc" data-k="o"><h4 style="color:var(--oss)">OSS</h4><p>Không có cơ chế Phone Home của Tetrate.</p><p class="st y">Không gửi gì</p></div>
+        <div class="phc" data-k="c"><h4 style="color:var(--com)">Community</h4><p>Gửi phiên bản và định danh cluster/instance, bắt buộc.</p><p class="st x">Không tắt được</p></div>
+        <div class="phc" data-k="e"><h4 style="color:var(--ent)">Enterprise</h4><p>Có cơ chế, nhưng mặc định tắt.</p><p class="st y">Tắt mặc định</p></div>
+      </div>
+      <p class="summary" id="phSum"></p>
+      <div class="verdict"><span>Giá trị</span><b>Rất thấp</b><em>vì OSS đã đáp ứng</em></div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="chap" id="c5">
+  <div class="chap-h"><span class="chap-n">5</span><h2>Bảng năng lực đầy đủ</h2></div>
+  <p class="chap-lede">Phần lớn các dòng giống hệt nhau. Bật bộ lọc để chỉ còn lại những dòng thực sự khác biệt.</p>
+  <div class="card">
+    <div class="mx-h"><div class="sw"><button class="switch" role="switch" aria-checked="false" id="diffSw" aria-labelledby="diffL"></button><span id="diffL">Chỉ hiện dòng khác biệt</span></div><span class="fine" id="diffN">12 năng lực</span></div>
+    <div class="mxw"><table class="mx" id="mx"><thead><tr><th></th><th>OSS</th><th>Community</th><th>Enterprise</th></tr></thead><tbody></tbody></table></div>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="chap" id="c6">
+  <div class="chap-h"><span class="chap-n">6</span><h2>Giá trị tăng thêm có đủ lớn không</h2></div>
+  <p class="chap-lede">Đánh giá định tính riêng cho dự án FPT Play. Cột cuối cho biết giá trị đó có phải độc quyền của Enterprise hay không.</p>
+  <div class="sw" style="margin-bottom:16px"><button class="switch" role="switch" aria-checked="false" id="exSw" aria-labelledby="exL"></button><span id="exL">Chỉ giữ giá trị mà OSS + Support có thể không có</span></div>
+  <div class="card val" id="val">
+    <div class="vhead"><span>Hạng mục</span><div class="sc"><span>Rất thấp</span><span>Thấp</span><span>Cao</span><span>Rất cao</span></div><span>Độc quyền Enterprise?</span></div>
+  </div>
+  <div class="card insight" id="insight">
+    <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="2" width="24" height="24" rx="7" fill="#FDECE4"/><path d="M14 8v8M14 19.5v.5" stroke="#E4501B" stroke-width="2.4" stroke-linecap="round"/></svg>
+    <div><p>Phần có thể độc quyền của Enterprise chỉ còn hai hạng mục, và cả hai đều phụ thuộc câu trả lời: mua support cho OSS có nhận được tương đương không?</p></div>
+  </div>
+</section>
+
+<!-- 7 -->
+<section class="chap" id="c7">
+  <div class="chap-h"><span class="chap-n">7</span><h2>Nếu là người quyết định đầu tư</h2></div>
+  <p class="chap-lede">Thứ tự ưu tiên bốn phương án. Chọn từng phương án để xem lý do.</p>
+  <div class="dec">
+    <div class="card ladder" id="ladder"></div>
+    <div class="card ddet" id="ddet" aria-live="polite"></div>
+  </div>
+  <h3 style="margin-top:56px;font-size:26px;max-width:30ch">Ba câu hỏi Tetrate phải trả lời trước khi mua Enterprise</h3>
+  <div class="qs">
+    <div class="card q"><span class="qn">1</span><h4>Có bao nhiêu CVE mà Enterprise đã có bản vá trước OSS trong 12 tháng gần nhất?</h4><p class="why"><b>Vì sao hỏi</b>Giá trị của Hardened Envoy chỉ có thật khi bản vá đến sớm hơn upstream.</p></div>
+    <div class="card q"><span class="qn">2</span><h4>Nếu mua Support cho OSS, FPT Play có được CVE hotfix và vòng đời mở rộng tương đương Enterprise không?</h4><p class="why"><b>Vì sao hỏi</b>Đây là hai giá trị duy nhất có thể còn độc quyền của Enterprise.</p></div>
+    <div class="card q"><span class="qn">3</span><h4>Enterprise có tính năng kỹ thuật độc quyền nào khác mà OSS không đáp ứng được?</h4><p class="why"><b>Vì sao hỏi</b>Bảng năng lực hiện chưa cho thấy khác biệt nào về xử lý API.</p></div>
+  </div>
+</section>
+</div>
+
+<section class="closing">
+  <div class="shell">
+    <p class="a">Câu hỏi không phải “OSS thiếu tính năng gì”.</p>
+    <p class="b">Mà là FPT Play muốn tự gánh phần nào, và trả tiền để ai gánh phần còn lại.</p>
+    <p class="fine">Nguồn tham chiếu trong bản phân tích: tài liệu Tetrate TEG v1.10.x, tài liệu Envoy Gateway OSS v1.10, điều khoản hỗ trợ của Tetrate và email của Huabing. Các đánh giá giá trị là định tính, dành riêng cho dự án FPT Play.</p>
+  </div>
+</section>
+
+<script>
+(function(){
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const once=(el,fn,th=.25)=>{const o=new IntersectionObserver(es=>{if(es[0].isIntersecting){fn();o.disconnect();}},{threshold:th});o.observe(el);};
+
+function seg(root,onPick){
+  const btns=$$('button',root), ind=$('.ind',root);
+  const place=()=>{const b=btns.find(x=>x.getAttribute('aria-pressed')==='true')||btns[0];if(!b.offsetWidth)return;ind.style.left=b.offsetLeft+'px';ind.style.width=b.offsetWidth+'px';};
+  btns.forEach(b=>b.addEventListener('click',()=>{btns.forEach(x=>x.setAttribute('aria-pressed',x===b));place();onPick(b.dataset.v,b);}));
+  addEventListener('resize',place);requestAnimationFrame(place);document.fonts&&document.fonts.ready.then(place);
+  root._place=place; return place;
+}
+addEventListener('scroll',()=>{const h=document.documentElement;$('#readbar').style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';},{passive:true});
+
+/* hero tree */
+$$('#tree .draw').forEach(p=>p.style.setProperty('--len',p.getTotalLength()));
+requestAnimationFrame(()=>setTimeout(()=>$('#tree').classList.add('go'),reduce?0:250));
+once($('#layers'),()=>$('#layers').classList.add('in'));
+
+/* capabilities */
+const CHECK='<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 7.5l2.5 2.5L11 4" fill="none" stroke="#0D7A63" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const CROSS='<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M4 4l6 6M10 4l-6 6" stroke="#C23A3A" stroke-width="2.2" stroke-linecap="round"/></svg>';
+const v=(t,k)=>({t,k}); // k: y yes, x no, m middle
+const CAPS=[
+ {n:'API Gateway',b:'eq',r:[v('Có','y'),v('Có','y'),v('Có','y')],d:'Năng lực xử lý API như nhau vì cùng mã nguồn.'},
+ {n:'High Availability',b:'eq',r:[v('Có','y'),v('Có','y'),v('Có','y')],d:'Cả ba đều đáp ứng. HA vẫn phụ thuộc thiết kế triển khai của FPT Play.'},
+ {n:'Load Balancing',b:'eq',r:[v('Có','y'),v('Có','y'),v('Có','y')],d:'Không có khác biệt giữa ba phiên bản.'},
+ {n:'Rate Limiting',b:'eq',r:[v('Có','y'),v('Có','y'),v('Có','y')],d:'Không có khác biệt giữa ba phiên bản.'},
+ {n:'Authentication',b:'eq',r:[v('Có','y'),v('Có','y'),v('Có','y')],d:'Không có khác biệt giữa ba phiên bản.'},
+ {n:'WAF',b:'diy',r:[v('Tự tích hợp','m'),v('Có sẵn','y'),v('Có sẵn','y')],d:'OSS tích hợp được Coraza WAF theo tài liệu chính thức. Community chỉ tiết kiệm công tích hợp và bảo trì module.'},
+ {n:'Hỗ trợ thương mại',b:'diy',r:[v('Mua thêm','m'),v('Không','x'),v('Theo gói','m')],d:'Mua được cho cả OSS, nên không phải giá trị độc quyền của Enterprise.'},
+ {n:'Hardened Envoy',b:'ent',r:[v('Không','x'),v('Không','x'),v('Có','y')],d:'Từ TEG v1.10, chỉ Enterprise dùng Tetrate Hardened Envoy. Community vẫn dùng Envoy upstream.'},
+ {n:'Bản vá riêng từ Tetrate',b:'ent',q:1,r:[v('Chưa xác nhận','m'),v('Không cam kết','x'),v('Có','y')],d:'Với OSS + Support, chưa rõ có nhận bản vá riêng hay không. Cần Tetrate xác nhận.'},
+ {n:'Vòng đời hỗ trợ mở rộng',b:'ent',q:1,r:[v('Chưa xác nhận khi mua support','m'),v('Không cam kết','x'),v('Có','y')],d:'Enterprise được vá đến 01/11/2027 thay vì 05/05/2027. Chưa rõ OSS + Support có tương đương không.'},
+ {n:'FIPS Edition',b:'ent',r:[v('Không mặc định','m'),v('Không','x'),v('Bản riêng','y')],d:'Enterprise có bản FIPS riêng. FPT Play hiện chưa có nhu cầu bắt buộc.'},
+ {n:'Không bắt buộc Phone Home',b:'worse',r:[v('Có','y'),v('Không','x'),v('Có','y')],d:'Community bắt buộc gửi thông tin phiên bản và định danh instance. OSS và Enterprise không bắt buộc.'}
+];
+const piles={}; $$('.pile').forEach(p=>piles[p.dataset.b]=p);
+CAPS.forEach((c,i)=>{const b=document.createElement('button');b.className='cap'+(c.q?' pend':'');b.textContent=c.n;b.setAttribute('aria-pressed','false');b.style.transitionDelay=(reduce?0:i*70)+'ms';b.addEventListener('click',()=>showCap(i));c.el=b;piles[c.b].appendChild(b);});
+const BN={eq:'Ngang nhau ở cả ba',diy:'OSS làm được, phải tự xây hoặc mua',ent:'Chỉ Enterprise có sẵn',worse:'Community kém hơn OSS'};
+function showCap(i){
+  CAPS.forEach((c,j)=>c.el.setAttribute('aria-pressed',i===j));const c=CAPS[i];
+  const names=['OSS','Community','Enterprise'],cols=['var(--oss)','var(--com)','var(--ent)'];
+  $('#capdet').innerHTML=`<div class="l"><span class="fine">${BN[c.b]}</span><h3>${c.n}</h3><p>${c.d}</p></div><div class="r">${c.r.map((x,k)=>`<div><span style="color:${cols[k]}">${names[k]}</span><b class="${x.k}">${x.t}</b></div>`).join('')}</div>`;
+}
+showCap(5);
+CAPS.forEach((c,i)=>c.el.addEventListener('click',()=>{if(innerWidth<980)$('#capdet').scrollIntoView({behavior:reduce?'auto':'smooth',block:'nearest'});}));
+once($('#sorter'),()=>{
+  $('#sorter').classList.add('sorted');
+  $$('.bucket .n').forEach(n=>{const t=CAPS.filter(c=>c.b===n.dataset.b).length;let k=0;const iv=setInterval(()=>{n.textContent=++k;if(k>=t)clearInterval(iv);},reduce?0:120);if(!t)clearInterval(iv);});
+});
+
+/* WAF */
+const WAF=[['Tích hợp Coraza WAF','fpt','tet','Tự thực hiện','Có sẵn module'],['Quản lý WAF module','fpt','tet','Tự thực hiện','Tetrate đóng gói'],['Cấu hình WAF','fpt','fpt','<code>EnvoyExtensionPolicy</code>','<code>ExtendedSecurityPolicy</code>'],['Quản lý tương thích module','fpt','tet','Nội bộ chịu trách nhiệm','Theo bản phân phối TEG'],['Tuning WAF rule','fpt','fpt','Tự thực hiện','Tự thực hiện']];
+function waf(m){
+  const k=m==='o'?1:2, d=m==='o'?3:4;
+  $('#own tbody').innerHTML=WAF.map(r=>`<tr><td>${r[0]}<div class="fine" style="margin-top:2px">${r[d]}</div></td><td><span class="who-chip ${r[k]==='fpt'?'w-fpt':'w-tet'}"><i></i>${r[k]==='fpt'?'FPT Play':'Tetrate'}</span></td></tr>`).join('');
+}
+seg($('#segWaf'),waf); waf('o');
+once($('.effort'),()=>{$('#bO').style.width='100%';});
+(()=>{const n=WAF.filter(r=>r[2]==='fpt').length;$('#eC').textContent=n+'/5 việc';$('#bC').dataset.w=n*20;once($('.effort'),()=>$('#bC').style.width=n*20+'%');})();
+
+/* enterprise tabs */
+const tabs=$$('.ptab');
+function sel(i,f){tabs.forEach((t,j)=>{t.setAttribute('aria-selected',i===j);t.tabIndex=i===j?0:-1;$('#'+t.getAttribute('aria-controls')).hidden=i!==j;});if(f)tabs[i].focus();
+  $$('.seg',$('#ep'+i)).forEach(s=>s._place&&s._place());
+  if(i===1)setTimeout(()=>$$('.tbar').forEach(b=>b.style.width=b.dataset.w+'%'),reduce?0:120);}
+tabs.forEach((t,i)=>{t.addEventListener('click',()=>sel(i));t.addEventListener('keydown',e=>{if(['ArrowDown','ArrowRight'].includes(e.key)){e.preventDefault();sel((i+1)%4,1);}if(['ArrowUp','ArrowLeft'].includes(e.key)){e.preventDefault();sel((i+3)%4,1);}});});
+
+/* CVE */
+const STEPS=[['Đánh giá CVE','FPT Play tự xác định phạm vi ảnh hưởng.','Tetrate cùng đánh giá trên Hardened Envoy.','fpt','both'],
+ ['Tìm giải pháp','Nghiên cứu advisory, upstream patch và workaround.','Tetrate nghiên cứu và chuẩn bị hướng xử lý.','fpt','tet'],
+ ['Chuẩn bị bản vá','Chờ bản phát hành upstream hoặc tự build bản vá.','Tetrate cung cấp bản vá trên Hardened Envoy.','fpt','tet'],
+ ['Regression test','FPT Play kiểm thử bản vá.','FPT Play kiểm thử bản vá.','fpt','fpt'],
+ ['Production rollout','FPT Play triển khai và giám sát.','FPT Play triển khai và giám sát.','fpt','fpt']];
+const chip=w=>w==='fpt'?'<span class="who-chip w-fpt"><i></i>FPT Play</span>':w==='tet'?'<span class="who-chip w-tet"><i></i>Tetrate</span>':'<span class="who-chip w-tet"><i></i>FPT Play + Tetrate</span>';
+function cve(m){
+  const e=m==='e';
+  $('#flow').innerHTML=STEPS.map((s,i)=>`<div class="fs"><span class="num">${i+1}</span><div><h4>${s[0]}</h4><p>${e?s[2]:s[1]}</p></div>${chip(e?s[4]:s[3])}</div>`).join('');
+  const sum=$('#cveSum');
+  if(e){sum.textContent='FPT Play không cần tự xây toàn bộ năng lực nghiên cứu và bảo trì mã nguồn Envoy. Kiểm thử và triển khai vẫn là việc nội bộ.';sum.style.background='var(--ent-t)';sum.style.color='#8F310C';}
+  else{sum.textContent=(m==='c'?'Community dùng Envoy upstream nên quy trình giống hệt OSS. ':'')+'Đội ngũ nội bộ chịu trách nhiệm chính trong cả năm bước.';sum.style.background='var(--well)';sum.style.color='var(--ink)';}
+}
+seg($('#segCve'),cve); cve('o');
+
+/* incident */
+let incOn=false;
+function animTo(el,from,to,fmt,dur){const t0=performance.now();const f=t=>{const p=Math.min(1,(t-t0)/dur),e=1-Math.pow(1-p,3);el.textContent=fmt(from+(to-from)*e);if(p<1)requestAnimationFrame(f);};reduce?el.textContent=fmt(to):requestAnimationFrame(f);}
+const nf=n=>Math.round(n).toLocaleString('vi-VN');
+$('#kR').textContent='200.000 RPS'; $('#kE').textContent='0,2%'; $('#kP').textContent='0,1 s';
+$('#incBtn').addEventListener('click',()=>{
+  incOn=!incOn;
+  $('#incBtn').textContent=incOn?'Khôi phục':'Mô phỏng sự cố';
+  animTo($('#kE'),incOn?.2:35,incOn?35:.2,n=>n.toLocaleString('vi-VN',{maximumFractionDigits:1})+'%',1200);
+  animTo($('#kP'),incOn?.1:5,incOn?5:.1,n=>n.toLocaleString('vi-VN',{maximumFractionDigits:1})+' s',1200);
+  $('#kEw').classList.toggle('bad',incOn);$('#kPw').classList.toggle('bad',incOn);
+});
+seg($('#segSup'),m=>{const on=m==='1';$('#esc').style.opacity=on?1:0;$('#tet').style.opacity=on?1:0;$('#tet').style.transform=on?'none':'translateX(16px)';
+  $('#supCap').textContent=on?'Đội ngũ nội bộ có thêm kênh escalation đến chuyên gia của Tetrate.':'DevOps, Backend, Network và CSOC tự phối hợp điều tra lỗi.';});
+const DEEP=['Bộ nhớ của tiến trình Envoy tăng dần qua thời gian. Khó tái hiện và khó khoanh vùng nếu không hiểu sâu cách Envoy cấp phát bộ nhớ.',
+ 'Lỗi liên quan đến việc quản lý kết nối HTTP/2 giữa client, Gateway và backend, thường chỉ lộ ra khi lưu lượng rất lớn.',
+ 'Vấn đề trong mô hình worker thread của Envoy, ví dụ tải phân bổ không đều giữa các luồng xử lý.',
+ 'Cấu hình được đẩy từ control plane xuống Envoy qua xDS gặp lỗi hoặc chậm, khiến Gateway xử lý sai dù Pod vẫn chạy.'];
+$$('#chips button').forEach(b=>b.addEventListener('click',()=>{$$('#chips button').forEach(x=>x.setAttribute('aria-pressed',x===b));$('#dd').textContent=DEEP[+b.dataset.i];}));
+$('#dd').textContent=DEEP[0];
+
+/* phone home */
+function ph(m){
+  $$('.phc').forEach(c=>{const k=c.dataset.k;c.classList.toggle('hi',k==='e'||k===m);c.classList.toggle('lo',!(k==='e'||k===m));});
+  const s=$('#phSum');
+  if(m==='c'){s.textContent='So với Community, đây là lợi thế rõ ràng của Enterprise.';s.style.background='var(--oss-t)';s.style.color='#0A4D3F';}
+  else{s.textContent='So với OSS, không có lợi thế nào: OSS vốn không gửi dữ liệu về Tetrate.';s.style.background='var(--well)';s.style.color='var(--ink)';}
+}
+seg($('#segPh'),ph); ph('c');
+
+/* matrix */
+const cell=x=>x.k==='y'?`<span class="ic y">${CHECK}${x.t==='Có'?'':x.t}</span>`:x.k==='x'?`<span class="ic x">${CROSS}${x.t==='Không'?'':x.t}</span>`:`<span class="ic m">${x.t}</span>`;
+$('#mx tbody').innerHTML=CAPS.map(c=>`<tr class="${c.b==='eq'?'eq':'df'}"><td>${c.n}</td>${c.r.map(x=>`<td>${cell(x)}</td>`).join('')}</tr>`).join('');
+$('#diffSw').addEventListener('click',e=>{const on=e.currentTarget.getAttribute('aria-checked')!=='true';e.currentTarget.setAttribute('aria-checked',on);$('#mx').classList.toggle('diff',on);$('#diffN').textContent=on?CAPS.filter(c=>c.b!=='eq').length+' trên 12 năng lực khác biệt':'12 năng lực';});
+
+/* value */
+const VAL=[['WAF tích hợp sẵn','Community so với OSS',2,'no','Không, Community có'],['Hardened Envoy & CVE hotfix','Enterprise so với OSS',4,'unk','Có thể, cần xác nhận'],['Extended Lifecycle Support','Enterprise so với OSS',3,'unk','Có thể, cần xác nhận'],['Commercial Support','Có thể mua cho cả OSS',4,'no','Không'],['Kiểm soát Phone Home','OSS đã đáp ứng',1,'no','Không'],['FIPS Compliance','Chưa có nhu cầu bắt buộc',1,'yes','Có, bản riêng'],['Tăng hiệu năng Gateway','Chưa có bằng chứng',0,'no','Chưa chứng minh']];
+const LBL={4:['Rất cao','var(--ent)'],3:['Cao','var(--com)'],2:['Thấp','var(--ink3)'],1:['Rất thấp','var(--hair2)'],0:['Chưa chứng minh','var(--ink3)']};
+$('#val').insertAdjacentHTML('beforeend',VAL.map(r=>`<div class="vr" data-ex="${r[3]}" data-l="${r[2]}"><div><h4>${r[0]}</h4><p>${r[1]}</p></div><div><div class="lv" style="--c:${LBL[r[2]][1]}"><span class="stem"></span><span class="pin ${r[2]?'':'unk'}"></span></div><div class="lvl" style="color:${r[2]?LBL[r[2]][1]:'var(--ink3)'}">${LBL[r[2]][0]}</div></div><div><span class="excl ${r[3]}">${r[4]}</span></div></div>`).join(''));
+once($('#val'),()=>$$('.vr').forEach((r,i)=>setTimeout(()=>{const l=+r.dataset.l;if(!l)return;const x=(l-1)/3*100;$('.pin',r).style.left=x+'%';$('.stem',r).style.width=x+'%';},reduce?0:i*90)));
+$('#exSw').addEventListener('click',e=>{const on=e.currentTarget.getAttribute('aria-checked')!=='true';e.currentTarget.setAttribute('aria-checked',on);
+  $$('.vr').forEach(r=>r.classList.toggle('dim',on&&!(r.dataset.ex==='unk')));$('#insight').classList.toggle('show',on);});
+
+/* decision */
+const DEC=[['OSS + Commercial Support','Rất cao',100,'var(--pos)','Giữ độ tự chủ và chi phí của OSS, đồng thời có chuyên gia Tetrate hỗ trợ khi có sự cố Live. Commercial Support là giá trị được đánh giá rất cao và mua được cho cả OSS.'],
+ ['OSS self-managed','Cao',75,'var(--oss)','Đáp ứng đầy đủ năng lực API Gateway và không gửi dữ liệu ra ngoài. Đổi lại, FPT Play tự gánh vá lỗi, nâng cấp và xử lý sự cố.'],
+ ['TEG Enterprise + Commercial Support','Cân nhắc theo chi phí và quyền lợi tăng thêm',50,'var(--amber)','Chỉ đáng mua nếu Tetrate chứng minh được bản vá CVE nhanh hơn và vòng đời mở rộng mà OSS + Support không có, với mức chênh lệch chi phí hợp lý.'],
+ ['TEG Community','Thấp',25,'var(--ink3)','Giá trị chính là WAF đóng gói sẵn, trong khi FPT Play đã có WAF do CSOC quản lý. Lại bắt buộc Phone Home, không tắt được.']];
+$('#ladder').innerHTML=DEC.map((d,i)=>`<button class="rung" data-i="${i}" aria-pressed="false"><div class="top2"><h4>${d[0]}</h4><span class="pr" style="color:${d[3]}">${d[1].split(' theo')[0]}</span></div><div class="t"><i class="${i===2?'dash':''}" style="background:${d[3]}" data-w="${d[2]}"></i></div></button>`).join('');
+function dec(i){$$('.rung').forEach((r,j)=>r.setAttribute('aria-pressed',i===j));const d=DEC[i];$('#ddet').innerHTML=`<span class="fine">Mức ưu tiên</span><h3>${d[0]}</h3><p class="pr" style="color:${d[3]}">${d[1]}</p><p>${d[4]}</p>`;}
+$$('.rung').forEach(r=>r.addEventListener('click',()=>dec(+r.dataset.i)));dec(0);
+once($('#ladder'),()=>$$('.rung .t i').forEach((b,i)=>setTimeout(()=>b.style.width=b.dataset.w+'%',reduce?0:i*120)));
+
+/* nav */
+const links=$$('.nav a');
+const no=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)links.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id));}),{rootMargin:'-35% 0px -60% 0px'});
+$$('.chap').forEach(c=>no.observe(c));
+})();
+</script>
+</body>
+</html>
